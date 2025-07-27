@@ -14,7 +14,7 @@ const CloseButton = React.forwardRef<HTMLButtonElement, CloseButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "border-2 border-neo-text bg-neo-bg opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none p-1",
+          "bg-transparent opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-neo-text/10 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none p-1 rounded",
           className
         )}
         {...props}

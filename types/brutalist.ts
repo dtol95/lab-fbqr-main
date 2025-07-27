@@ -24,7 +24,7 @@ export interface BrutalistComponentProps {
    * - none: No shadow applied
    */
   shadow?: BrutalistShadowVariant
-  
+
   /**
    * Interaction behavior for the component
    * - default: Standard hover/active interactions with shadow and transform
@@ -32,7 +32,7 @@ export interface BrutalistComponentProps {
    * - enhanced: Stronger interactions with larger shadows and transforms
    */
   interaction?: BrutalistInteractionVariant
-  
+
   /**
    * Backward compatibility prop to disable shadows
    * @deprecated Use shadow="none" instead
@@ -52,7 +52,7 @@ export interface BrutalistButtonProps extends BrutalistComponentProps {
    * - link: Text-only appearance with underline
    */
   variant?: BrutalistButtonVariant
-  
+
   /**
    * Button size variant
    */
@@ -191,7 +191,7 @@ export const BRUTALIST_ELEMENTS = {
 } as const
 
 // Export type for CSS variable names used in the brutalist system
-export type BrutalistCSSVariable = 
+export type BrutalistCSSVariable =
   | '--neo-bg'
   | '--neo-interactive-bg'
   | '--neo-text'

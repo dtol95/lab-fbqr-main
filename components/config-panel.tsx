@@ -338,8 +338,9 @@ export default function ConfigPanel({
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="dots">
             <AccordionTrigger>DOTS</AccordionTrigger>
-            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
-              <FormSection>
+            <AccordionContent className="px-0 py-3 pb-5 pr-10 overflow-x-visible">
+              <div className="px-4">
+                <FormSection>
                 <FormField>
                   <Label className="font-sans font-normal text-sm">Style</Label>
                   <Select
@@ -370,14 +371,16 @@ export default function ConfigPanel({
                   gradient={styleOptions.dotsOptions.gradient}
                   onGradientChange={(g) => handleGradientOptionChange("dotsOptions", { gradient: g })}
                 />
-              </FormSection>
+                </FormSection>
+              </div>
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="corners">
             <AccordionTrigger>CORNERS</AccordionTrigger>
-            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
-              <FormSection>
+            <AccordionContent className="px-0 py-3 pb-5 pr-10 overflow-x-visible">
+              <div className="px-4">
+                <FormSection>
                 <FormSection>
                   <Label className="font-sans font-bold text-base uppercase mb-2 block">Corner Squares</Label>
                   <FormField>
@@ -443,13 +446,15 @@ export default function ConfigPanel({
                     onGradientChange={(g) => handleGradientOptionChange("cornersDotOptions", { gradient: g })}
                   />
                 </FormSection>
-              </FormSection>
+                </FormSection>
+              </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="background">
             <AccordionTrigger>BACKGROUND</AccordionTrigger>
-            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
-              <FormSection>
+            <AccordionContent className="px-0 py-3 pb-5 pr-10 overflow-x-visible">
+              <div className="px-4">
+                <FormSection>
                 <ColorControls className="mb-4">
                   <Checkbox
                     id="transparent-bg"
@@ -473,13 +478,15 @@ export default function ConfigPanel({
                     onGradientChange={(g) => handleGradientOptionChange("backgroundOptions", { gradient: g })}
                   />
                 )}
-              </FormSection>
+                </FormSection>
+              </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="logo" className="border-b-0">
             <AccordionTrigger>LOGO</AccordionTrigger>
-            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
-              <FormSection>
+            <AccordionContent className="px-0 py-3 pb-5 pr-10 overflow-x-visible">
+              <div className="px-4">
+                <FormSection>
                 {logoPreview ? (
                   <Button variant="destructive" onClick={onRemoveLogo}>
                     REMOVE LOGO
@@ -523,7 +530,8 @@ export default function ConfigPanel({
                     </ColorControls>
                   </FormSection>
                 )}
-              </FormSection>
+                  </FormSection>
+                </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

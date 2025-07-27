@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { 
@@ -57,7 +57,9 @@ import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, Me
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { FormSection, FormGroup, FormField, FormControls } from "@/components/ui/form-layout"
+import { CloseButton } from "@/components/ui/close-button"
 import { useToast } from "@/hooks/use-toast"
+import { extractJSXCode } from "@/lib/code-extractor"
 
 
 // Navigation component for atomic design sections
@@ -146,31 +148,48 @@ const ComponentShowcase = ({
   description, 
   preview, 
   code,
+  dynamicCode = false,
   className = ""
 }: { 
   title: string
   description: string
   preview: React.ReactNode
-  code: string
+  code?: string
+  dynamicCode?: boolean
   className?: string
-}) => (
-  <Card className="mb-8 shadow-neo-large">
-    <CardHeader className="border-b-2 border-neo-text">
-      <CardTitle className="font-heading text-xl">{title}</CardTitle>
-      <p className="text-muted-foreground text-sm">{description}</p>
-    </CardHeader>
-    <CardContent className="p-0">
-      <div className={`p-8 bg-white border-b-2 border-neo-text overflow-hidden ${className}`}>
-        <div className="flex flex-wrap items-center justify-center gap-4 max-w-full">
-          {preview}
+}) => {
+  // Generate dynamic code if requested and no static code provided
+  const displayCode = useMemo(() => {
+    if (code) return code
+    if (dynamicCode && React.isValidElement(preview)) {
+      try {
+        return extractJSXCode(preview)
+      } catch (error) {
+        return '// Unable to extract code automatically'
+      }
+    }
+    return '// No code provided'
+  }, [code, dynamicCode, preview])
+
+  return (
+    <Card className="mb-8 shadow-neo-large">
+      <CardHeader className="border-b-2 border-neo-text">
+        <CardTitle className="font-heading text-xl">{title}</CardTitle>
+        <p className="text-muted-foreground text-sm">{description}</p>
+      </CardHeader>
+      <CardContent className="p-0">
+        <div className={`p-8 bg-white border-b-2 border-neo-text overflow-hidden ${className}`}>
+          <div className="flex flex-wrap items-center justify-center gap-4 max-w-full">
+            {preview}
+          </div>
         </div>
-      </div>
-      <div className="p-6">
-        <CodeBlock code={code} />
-      </div>
-    </CardContent>
-  </Card>
-)
+        <div className="p-6">
+          <CodeBlock code={displayCode} />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
 
 // ATOMS SECTION COMPONENTS
 
@@ -819,17 +838,17 @@ const BasicControlsShowcase = () => {
             <div className="space-y-4">
               <Label>Radio Group</Label>
               <RadioGroup value={radioValue} onValueChange={setRadioValue}>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <RadioGroupItem value="option1" id="r1" />
-                  <Label htmlFor="r1">Option 1</Label>
+                  <Label htmlFor="r1" className="text-base">Option 1</Label>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <RadioGroupItem value="option2" id="r2" />
-                  <Label htmlFor="r2">Option 2</Label>
+                  <Label htmlFor="r2" className="text-base">Option 2</Label>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <RadioGroupItem value="option3" id="r3" />
-                  <Label htmlFor="r3">Option 3</Label>
+                  <Label htmlFor="r3" className="text-base">Option 3</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -856,9 +875,17 @@ const BasicControlsShowcase = () => {
           </div>
         }
         code={`<RadioGroup value={value} onValueChange={setValue}>
-  <div className="flex items-center space-x-2">
+  <div className="flex items-center space-x-3">
     <RadioGroupItem value="option1" id="r1" />
-    <Label htmlFor="r1">Option 1</Label>
+    <Label htmlFor="r1" className="text-base">Option 1</Label>
+  </div>
+  <div className="flex items-center space-x-3">
+    <RadioGroupItem value="option2" id="r2" />
+    <Label htmlFor="r2" className="text-base">Option 2</Label>
+  </div>
+  <div className="flex items-center space-x-3">
+    <RadioGroupItem value="option3" id="r3" />
+    <Label htmlFor="r3" className="text-base">Option 3</Label>
   </div>
 </RadioGroup>
 
@@ -932,6 +959,79 @@ const ButtonsShowcase = () => (
 <Button shadow="none">No Shadow</Button>
 <Button shadow="large">Large Shadow</Button>
 <Button interaction="enhanced">Enhanced</Button>`}
+    />
+
+    <ComponentShowcase
+      title="Close Button"
+      description="Specialized button for dismissing dialogs, sheets, and other overlays"
+      preview={
+        <div className="flex gap-4 w-full items-center justify-center">
+          <div className="text-center space-y-2">
+            <CloseButton />
+            <p className="text-xs text-muted-foreground">Default</p>
+          </div>
+          <div className="text-center space-y-2">
+            <CloseButton className="p-2" />
+            <p className="text-xs text-muted-foreground">More Padding</p>
+          </div>
+          <div className="text-center space-y-2">
+            <CloseButton className="p-0.5" />
+            <p className="text-xs text-muted-foreground">Less Padding</p>
+          </div>
+        </div>
+      }
+      code={`import { CloseButton } from "@/components/ui/close-button"
+
+<CloseButton />
+<CloseButton className="p-2" /> // More padding
+<CloseButton className="p-0.5" /> // Less padding`}
+    />
+
+    <ComponentShowcase
+      title="Button Group Hover Pattern"
+      description="Standard hover behavior for grouped buttons with accent color"
+      preview={
+        <div className="space-y-4 w-full">
+          <div className="flex gap-2">
+            <Button>Primary Action</Button>
+            <Button variant="outline">Secondary</Button>
+            <Button variant="destructive">Delete</Button>
+          </div>
+          <div className="flex border-2 border-neo-text">
+            <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
+              <Save className="w-4 h-4" />
+            </Button>
+            <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
+              <Edit className="w-4 h-4" />
+            </Button>
+            <Button variant="outline" className="rounded-none border-0 shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
+              <Trash2 className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      }
+      code={`// Standard button group
+<div className="flex gap-2">
+  <Button>Primary Action</Button>
+  <Button variant="outline">Secondary</Button>
+  <Button variant="destructive">Delete</Button>
+</div>
+
+// Icon toolbar with hover accent
+<div className="flex border-2 border-neo-text">
+  <Button 
+    variant="outline" 
+    className="rounded-none border-0 border-r-2 border-neo-text shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none"
+  >
+    <Save className="w-4 h-4" />
+  </Button>
+  <Button 
+    variant="outline" 
+    className="rounded-none border-0 shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none"
+  >
+    <Edit className="w-4 h-4" />
+  </Button>
+</div>`}
     />
   </div>
 )
@@ -1048,13 +1148,13 @@ const MoleculesShowcase = () => (
             <Button variant="destructive">Delete</Button>
           </div>
           <div className="flex border-2 border-neo-text">
-            <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none">
+            <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
               <Save className="w-4 h-4" />
             </Button>
-            <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none">
+            <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
               <Edit className="w-4 h-4" />
             </Button>
-            <Button variant="outline" className="rounded-none border-0 shadow-none">
+            <Button variant="outline" className="rounded-none border-0 shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
               <Trash2 className="w-4 h-4" />
             </Button>
           </div>
@@ -1069,11 +1169,14 @@ const MoleculesShowcase = () => (
 
 // Icon toolbar
 <div className="flex border-2 border-neo-text">
-  <Button variant="outline" className="rounded-none border-0 border-r-2">
+  <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
     <Save className="w-4 h-4" />
   </Button>
-  <Button variant="outline" className="rounded-none border-0">
+  <Button variant="outline" className="rounded-none border-0 border-r-2 border-neo-text shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
     <Edit className="w-4 h-4" />
+  </Button>
+  <Button variant="outline" className="rounded-none border-0 shadow-none hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none">
+    <Trash2 className="w-4 h-4" />
   </Button>
 </div>`}
     />
@@ -1361,7 +1464,7 @@ const OrganismsShowcase = () => (
         <div className="w-full border-2 border-neo-text">
           <Table>
             <TableHeader>
-              <TableRow className="border-b-2 border-neo-text">
+              <TableRow className="border-b-4 border-neo-text">
                 <TableHead className="font-bold">Name</TableHead>
                 <TableHead className="font-bold">Email</TableHead>
                 <TableHead className="font-bold">Role</TableHead>
@@ -1391,10 +1494,11 @@ const OrganismsShowcase = () => (
       }
       code={`<Table>
   <TableHeader>
-    <TableRow>
-      <TableHead>Name</TableHead>
-      <TableHead>Email</TableHead>
-      <TableHead>Actions</TableHead>
+    <TableRow className="border-b-4 border-neo-text">
+      <TableHead className="font-bold">Name</TableHead>
+      <TableHead className="font-bold">Email</TableHead>
+      <TableHead className="font-bold">Role</TableHead>
+      <TableHead className="font-bold">Actions</TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>

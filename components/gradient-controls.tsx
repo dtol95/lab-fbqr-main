@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { ColorInput } from "@/components/ui/color-input"
 import { BrutalistSlider } from "@/components/ui/brutalist-slider"
+import { FormField, ColorControls, ColorGrid } from "@/components/ui/form-layout"
 import type { Gradient } from "@/types"
 import { AnimatePresence, motion } from "framer-motion"
 
@@ -36,8 +37,8 @@ export function GradientControls({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center space-x-2">
+    <FormField>
+      <ColorControls>
         <Checkbox
           id={`use-gradient-${label}`}
           checked={useGradient}
@@ -46,7 +47,7 @@ export function GradientControls({
         <Label htmlFor={`use-gradient-${label}`} className="font-sans uppercase font-bold">
           Use Gradient
         </Label>
-      </div>
+      </ColorControls>
 
       <AnimatePresence initial={false}>
         {useGradient ? (
@@ -56,9 +57,10 @@ export function GradientControls({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
+            className="overflow-hidden"
           >
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-neo-md pt-neo-sm">
+              <ColorGrid columns={2}>
                 <ColorInput
                   value={gradient?.colorStops[0]?.color || "#ff0000"}
                   onChange={(c) => handleColorStopChange(0, c)}
@@ -67,8 +69,8 @@ export function GradientControls({
                   value={gradient?.colorStops[1]?.color || "#0000ff"}
                   onChange={(c) => handleColorStopChange(1, c)}
                 />
-              </div>
-              <div className="space-y-2">
+              </ColorGrid>
+              <FormField>
                 <div className="flex justify-between items-center">
                   <Label htmlFor={`angle-slider-${label}`} className="font-sans font-bold uppercase text-sm">
                     Angle
@@ -82,7 +84,7 @@ export function GradientControls({
                   step={1}
                   onValueChange={(v) => handleGradientPropChange("rotation", v[0])}
                 />
-              </div>
+              </FormField>
             </div>
           </motion.div>
         ) : (
@@ -92,13 +94,14 @@ export function GradientControls({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
+            className="overflow-hidden"
           >
-            <div>
+            <div className="pt-neo-sm">
               <ColorInput value={color} onChange={onColorChange} />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </FormField>
   )
 }

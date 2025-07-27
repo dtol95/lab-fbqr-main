@@ -48,3 +48,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 /.kiro
+/screenshots

@@ -56,6 +56,8 @@ import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarSeparator, Me
 // Toggle Components
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { FormSection, FormGroup, FormField, FormControls } from "@/components/ui/form-layout"
+import { useToast } from "@/hooks/use-toast"
 
 
 // Navigation component for atomic design sections
@@ -71,7 +73,7 @@ const AtomicNavigation = ({ activeSection, onSectionChange }: {
   ]
 
   return (
-    <div className="border-b-2 border-neo-text mb-8">
+    <div className="border-2 border-neo-text mb-8">
       <div className="grid grid-cols-4 gap-0">
         {sections.map((section) => (
           <button
@@ -386,6 +388,342 @@ const IconsShowcase = () => (
     />
   </div>
 )
+
+// Spacing system showcase
+const SpacingSystemShowcase = () => (
+  <div className="grid gap-8">
+    <ComponentShowcase
+      title="Brutalist Spacing Scale"
+      description="Standardized spacing system for consistent form and component layout"
+      preview={
+        <div className="w-full space-neo-lg">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-neo-md w-full">
+            <div className="space-neo-sm">
+              <div className="text-xs font-mono mb-2">space-neo-xs (8px)</div>
+              <div className="bg-neo-accent h-2"></div>
+            </div>
+            <div className="space-neo-sm">
+              <div className="text-xs font-mono mb-2">space-neo-sm (12px)</div>
+              <div className="bg-neo-accent h-3"></div>
+            </div>
+            <div className="space-neo-sm">
+              <div className="text-xs font-mono mb-2">space-neo-md (16px)</div>
+              <div className="bg-neo-accent h-4"></div>
+            </div>
+            <div className="space-neo-sm">
+              <div className="text-xs font-mono mb-2">space-neo-lg (24px)</div>
+              <div className="bg-neo-accent h-6"></div>
+            </div>
+            <div className="space-neo-sm">
+              <div className="text-xs font-mono mb-2">space-neo-xl (32px)</div>
+              <div className="bg-neo-accent h-8"></div>
+            </div>
+            <div className="space-neo-sm">
+              <div className="text-xs font-mono mb-2">space-neo-2xl (48px)</div>
+              <div className="bg-neo-accent h-12"></div>
+            </div>
+          </div>
+        </div>
+      }
+      code={`/* Brutalist Spacing System */
+--neo-space-xs: 0.5rem;    /* 8px - tight spacing within components */
+--neo-space-sm: 0.75rem;   /* 12px - form element internal spacing */
+--neo-space-md: 1rem;      /* 16px - standard form field spacing */
+--neo-space-lg: 1.5rem;    /* 24px - section spacing */
+--neo-space-xl: 2rem;      /* 32px - major section breaks */
+--neo-space-2xl: 3rem;     /* 48px - page section spacing */
+
+/* Usage Classes */
+.space-neo-md > * + * { margin-top: var(--neo-space-md); }
+.gap-neo-md { gap: var(--neo-space-md); }
+.neo-form-field { margin-bottom: var(--neo-space-md); }
+
+/* Applied in Config Panel */
+.config-section-header { padding: var(--neo-space-xl); }
+.accordion-content { padding: var(--neo-space-lg); }`}
+    />
+
+    <ComponentShowcase
+      title="Form Spacing Hierarchy"
+      description="Applied spacing system for consistent form layout and element relationships"
+      preview={
+        <div className="w-full border-2 border-neo-text bg-neo-bg p-6">
+          <div className="space-neo-lg">
+            <h3 className="font-heading text-lg mb-4">Contact Form</h3>
+            <div className="space-neo-md">
+              <div className="space-neo-sm">
+                <Label htmlFor="demo-name">Full Name</Label>
+                <Input id="demo-name" placeholder="Enter your name" />
+              </div>
+              <div className="space-neo-sm">
+                <Label htmlFor="demo-email">Email Address</Label>
+                <Input id="demo-email" type="email" placeholder="you@example.com" />
+              </div>
+              <div className="space-neo-sm">
+                <Label htmlFor="demo-message">Message</Label>
+                <Textarea id="demo-message" placeholder="Your message" rows={3} />
+              </div>
+            </div>
+            <div className="flex gap-neo-sm">
+              <Button>Submit</Button>
+              <Button variant="outline">Cancel</Button>
+            </div>
+          </div>
+        </div>
+      }
+      code={`<!-- Form with Brutalist Spacing -->
+<form className="space-neo-lg">
+  <div className="space-neo-md">
+    <div className="space-neo-sm">
+      <Label htmlFor="name">Full Name</Label>
+      <Input id="name" placeholder="Enter your name" />
+    </div>
+    <div className="space-neo-sm">
+      <Label htmlFor="email">Email Address</Label>
+      <Input id="email" type="email" placeholder="you@example.com" />
+    </div>
+  </div>
+  <div className="flex gap-neo-sm">
+    <Button>Submit</Button>
+    <Button variant="outline">Cancel</Button>
+  </div>
+</form>`}
+    />
+
+    <ComponentShowcase
+      title="Form Layout Components"
+      description="Reusable layout components with built-in brutalist spacing patterns"
+      preview={
+        <div className="w-full border-2 border-neo-text bg-neo-bg p-6">
+          <FormSection 
+            title="User Profile" 
+            description="Update your personal information"
+          >
+            <FormGroup columns={2}>
+              <FormField>
+                <Label htmlFor="first-name">First Name</Label>
+                <Input id="first-name" placeholder="John" />
+              </FormField>
+              <FormField>
+                <Label htmlFor="last-name">Last Name</Label>
+                <Input id="last-name" placeholder="Doe" />
+              </FormField>
+            </FormGroup>
+            
+            <FormGroup>
+              <FormField>
+                <Label htmlFor="bio">Bio</Label>
+                <Textarea id="bio" placeholder="Tell us about yourself" rows={3} />
+              </FormField>
+            </FormGroup>
+            
+            <FormControls>
+              <Button>Save Changes</Button>
+              <Button variant="outline">Cancel</Button>
+              <Button variant="destructive">Delete Profile</Button>
+            </FormControls>
+          </FormSection>
+        </div>
+      }
+      code={`// Using Form Layout Components
+import { FormSection, FormGroup, FormField, FormControls } from "@/components/ui/form-layout"
+
+<FormSection 
+  title="User Profile" 
+  description="Update your personal information"
+>
+  <FormGroup columns={2}>
+    <FormField>
+      <Label htmlFor="first-name">First Name</Label>
+      <Input id="first-name" placeholder="John" />
+    </FormField>
+    <FormField>
+      <Label htmlFor="last-name">Last Name</Label>
+      <Input id="last-name" placeholder="Doe" />
+    </FormField>
+  </FormGroup>
+  
+  <FormControls>
+    <Button>Save Changes</Button>
+    <Button variant="outline">Cancel</Button>
+  </FormControls>
+</FormSection>`}
+    />
+
+  </div>
+)
+
+// Notification system showcase
+const NotificationShowcase = () => {
+  const { toast } = useToast()
+
+  const showDefaultToast = () => {
+    toast({
+      title: "Default Notification",
+      description: "This is a standard notification message with default styling.",
+    })
+  }
+
+  const showSuccessToast = () => {
+    toast({
+      variant: "success",
+      title: "Success!",
+      description: "Your action was completed successfully. Everything is working as expected.",
+    })
+  }
+
+  const showErrorToast = () => {
+    toast({
+      variant: "destructive",
+      title: "Error Occurred",
+      description: "Something went wrong. Please try again or contact support if the issue persists.",
+    })
+  }
+
+  const showInfoToast = () => {
+    toast({
+      title: "Information",
+      description: "Here's some important information you should know about.",
+    })
+  }
+
+  const showActionToast = () => {
+    toast({
+      title: "Action Required",
+      description: "Would you like to undo this action?",
+      action: (
+        <Button variant="outline" size="sm" className="ml-auto">
+          Undo
+        </Button>
+      ),
+    })
+  }
+
+  const showLongToast = () => {
+    toast({
+      title: "Detailed Information",
+      description: "This is a longer notification message that demonstrates how the toast component handles more detailed content. It should wrap properly and maintain good readability even with multiple lines of text.",
+    })
+  }
+
+  return (
+    <div className="grid gap-8">
+      <ComponentShowcase
+        title="Interactive Toast Notifications"
+        description="Click buttons to see live toast examples with different variants and styles"
+        preview={
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-neo-md w-full">
+            <Button onClick={showDefaultToast} variant="outline">
+              Default Toast
+            </Button>
+            <Button onClick={showSuccessToast} variant="default">
+              Success Toast
+            </Button>
+            <Button onClick={showErrorToast} variant="destructive">
+              Error Toast
+            </Button>
+            <Button onClick={showInfoToast} variant="secondary">
+              Info Toast
+            </Button>
+            <Button onClick={showActionToast} variant="outline">
+              Toast with Action
+            </Button>
+            <Button onClick={showLongToast} variant="outline">
+              Long Description
+            </Button>
+          </div>
+        }
+        code={`import { useToast } from "@/hooks/use-toast"
+
+function MyComponent() {
+  const { toast } = useToast()
+
+  // Default toast
+  const showDefault = () => {
+    toast({
+      title: "Default Notification",
+      description: "Standard notification message.",
+    })
+  }
+
+  // Success toast
+  const showSuccess = () => {
+    toast({
+      variant: "success",
+      title: "Success!",
+      description: "Action completed successfully.",
+    })
+  }
+
+  // Error toast
+  const showError = () => {
+    toast({
+      variant: "destructive",
+      title: "Error Occurred",
+      description: "Something went wrong.",
+    })
+  }
+
+  // Toast with action button
+  const showAction = () => {
+    toast({
+      title: "Action Required",
+      description: "Would you like to undo?",
+      action: (
+        <Button variant="outline" size="sm">
+          Undo
+        </Button>
+      ),
+    })
+  }
+
+  return (
+    <div>
+      <Button onClick={showDefault}>Show Toast</Button>
+    </div>
+  )
+}`}
+      />
+
+      <ComponentShowcase
+        title="Toast Variants"
+        description="All available toast styling variants with brutalist design"
+        preview={
+          <div className="space-neo-md">
+            <div className="p-4 border-2 border-neo-text bg-neo-bg shadow-neo">
+              <div className="font-bold uppercase text-base mb-2">Default Toast</div>
+              <div className="text-sm opacity-80">Standard notification with neutral styling</div>
+            </div>
+            <div className="p-4 border-2 border-neo-text bg-neo-accent shadow-neo">
+              <div className="font-bold uppercase text-base mb-2">Success Toast</div>
+              <div className="text-sm opacity-80">Positive feedback with accent background</div>
+            </div>
+            <div className="p-4 border-2 border-neo-text bg-[hsl(var(--neo-destructive-accent))] shadow-neo">
+              <div className="font-bold uppercase text-base mb-2 text-white">Error Toast</div>
+              <div className="text-sm opacity-80 text-white">Error messages with red background</div>
+            </div>
+          </div>
+        }
+        code={`// Toast component variants
+const toastVariants = cva(
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden p-4 transition-all border-2 border-[var(--neo-text)] shadow-[4px_4px_0px_var(--neo-text)] rounded-none",
+  {
+    variants: {
+      variant: {
+        default: "bg-[var(--neo-bg)]",
+        success: "bg-[var(--neo-accent)]",
+        destructive: "bg-[hsl(var(--neo-destructive-accent))]",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
+  }
+)`}
+      />
+    </div>
+  )
+}
 
 // Basic controls showcase
 const BasicControlsShowcase = () => {
@@ -934,7 +1272,7 @@ const OrganismsShowcase = () => (
       preview={
         <div className="w-full">
           <Tabs defaultValue="tab1" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="w-full grid-cols-3">
               <TabsTrigger value="tab1">Overview</TabsTrigger>
               <TabsTrigger value="tab2">Analytics</TabsTrigger>
               <TabsTrigger value="tab3">Settings</TabsTrigger>
@@ -1146,9 +1484,11 @@ export default function StyleGuidePage() {
           >
             <TypographyShowcase />
             <ColorSystemShowcase />
+            <SpacingSystemShowcase />
             <IconsShowcase />
             <ButtonsShowcase />
             <BasicControlsShowcase />
+            <NotificationShowcase />
             <DataDisplayShowcase />
           </AtomicSection>
         )

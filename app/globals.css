@@ -48,6 +48,14 @@
     --neo-letter-spacing-tight: -0.02em;
     --neo-text-transform-heading: uppercase;
 
+    /* Brutalist Spacing System */
+    --neo-space-xs: 0.5rem;    /* 8px - tight spacing within components */
+    --neo-space-sm: 0.75rem;   /* 12px - form element internal spacing */
+    --neo-space-md: 1rem;      /* 16px - standard form field spacing */
+    --neo-space-lg: 1.5rem;    /* 24px - section spacing */
+    --neo-space-xl: 2rem;      /* 32px - major section breaks */
+    --neo-space-2xl: 3rem;     /* 48px - page section spacing */
+
     /* Mapped to existing theme for component compatibility */
     --background: var(--page-bg);
     --foreground: var(--neo-text);
@@ -239,6 +247,23 @@
     @apply neo-card;
     padding: 2rem;
   }
+
+  /* Brutalist Form Spacing Classes */
+  .neo-form-field {
+    margin-bottom: var(--neo-space-md);
+  }
+
+  .neo-form-group {
+    margin-bottom: var(--neo-space-lg);
+  }
+
+  .neo-form-section {
+    margin-bottom: var(--neo-space-xl);
+  }
+
+  .neo-form-controls {
+    gap: var(--neo-space-sm);
+  }
 }
 
 @layer utilities {
@@ -340,5 +365,144 @@
 
   .border-neo {
     border-color: var(--neo-border-color);
+  }
+
+  /* Brutalist Spacing Utilities */
+  .space-neo-xs > * + * {
+    margin-top: var(--neo-space-xs);
+  }
+
+  .space-neo-sm > * + * {
+    margin-top: var(--neo-space-sm);
+  }
+
+  .space-neo-md > * + * {
+    margin-top: var(--neo-space-md);
+  }
+
+  .space-neo-lg > * + * {
+    margin-top: var(--neo-space-lg);
+  }
+
+  .space-neo-xl > * + * {
+    margin-top: var(--neo-space-xl);
+  }
+
+  .space-neo-2xl > * + * {
+    margin-top: var(--neo-space-2xl);
+  }
+
+  .gap-neo-xs {
+    gap: var(--neo-space-xs);
+  }
+
+  .gap-neo-sm {
+    gap: var(--neo-space-sm);
+  }
+
+  .gap-neo-md {
+    gap: var(--neo-space-md);
+  }
+
+  .gap-neo-lg {
+    gap: var(--neo-space-lg);
+  }
+
+  .gap-neo-xl {
+    gap: var(--neo-space-xl);
+  }
+
+  .gap-neo-2xl {
+    gap: var(--neo-space-2xl);
+  }
+
+  /* Form-specific spacing utilities */
+  .p-neo-xs {
+    padding: var(--neo-space-xs);
+  }
+
+  .p-neo-sm {
+    padding: var(--neo-space-sm);
+  }
+
+  .p-neo-md {
+    padding: var(--neo-space-md);
+  }
+
+  .p-neo-lg {
+    padding: var(--neo-space-lg);
+  }
+
+  .p-neo-xl {
+    padding: var(--neo-space-xl);
+  }
+
+  .p-neo-2xl {
+    padding: var(--neo-space-2xl);
+  }
+
+  .pt-neo-xs {
+    padding-top: var(--neo-space-xs);
+  }
+
+  .pt-neo-sm {
+    padding-top: var(--neo-space-sm);
+  }
+
+  .pt-neo-md {
+    padding-top: var(--neo-space-md);
+  }
+
+  .pt-neo-lg {
+    padding-top: var(--neo-space-lg);
+  }
+
+  .pt-neo-xl {
+    padding-top: var(--neo-space-xl);
+  }
+
+  .pt-neo-2xl {
+    padding-top: var(--neo-space-2xl);
+  }
+
+  .pb-neo-xs {
+    padding-bottom: var(--neo-space-xs);
+  }
+
+  .pb-neo-sm {
+    padding-bottom: var(--neo-space-sm);
+  }
+
+  .pb-neo-md {
+    padding-bottom: var(--neo-space-md);
+  }
+
+  .pb-neo-lg {
+    padding-bottom: var(--neo-space-lg);
+  }
+
+  .pb-neo-xl {
+    padding-bottom: var(--neo-space-xl);
+  }
+
+  .pb-neo-2xl {
+    padding-bottom: var(--neo-space-2xl);
+  }
+
+  /* Color control specific utilities */
+  .color-control-gap {
+    gap: var(--neo-space-sm);
+  }
+
+  .color-grid-gap {
+    gap: var(--neo-space-sm);
+  }
+
+  .form-section-spacing {
+    margin-bottom: var(--neo-space-xl);
+  }
+
+  .accordion-content-spacing {
+    padding: var(--neo-space-lg);
   }
 }

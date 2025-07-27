@@ -309,9 +309,9 @@ export default function ConfigPanel({
   }
 
   return (
-    <div className="h-full flex flex-col bg-transparent">
-      <div className="p-8 border-b-2 border-[#1c1c1c]">
-        <h2 className="font-heading text-3xl mb-6">CONTENT</h2>
+    <div className="h-full flex flex-col bg-transparent px-2 min-w-[450px]">
+      <div className="p-4 border-b-2 border-[#1c1c1c]">
+        <h2 className="font-heading text-3xl mb-3">CONTENT</h2>
         <div className="grid grid-cols-3 gap-neo-md">
           {contentTypes.map((ct) => (
             <Button
@@ -331,14 +331,14 @@ export default function ConfigPanel({
             </Button>
           ))}
         </div>
-        <div className="mt-8">{renderContentInputs()}</div>
+        <div className="mt-4">{renderContentInputs()}</div>
       </div>
 
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 pb-4">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="dots">
             <AccordionTrigger>DOTS</AccordionTrigger>
-            <AccordionContent className="p-neo-lg">
+            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
               <FormSection>
                 <FormField>
                   <Label className="font-sans font-normal text-sm">Style</Label>
@@ -376,7 +376,7 @@ export default function ConfigPanel({
 
           <AccordionItem value="corners">
             <AccordionTrigger>CORNERS</AccordionTrigger>
-            <AccordionContent className="p-neo-lg">
+            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
               <FormSection>
                 <FormSection>
                   <Label className="font-sans font-bold text-base uppercase mb-2 block">Corner Squares</Label>
@@ -448,9 +448,9 @@ export default function ConfigPanel({
           </AccordionItem>
           <AccordionItem value="background">
             <AccordionTrigger>BACKGROUND</AccordionTrigger>
-            <AccordionContent className="p-neo-lg">
+            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
               <FormSection>
-                <ColorControls>
+                <ColorControls className="mb-4">
                   <Checkbox
                     id="transparent-bg"
                     checked={styleOptions.backgroundOptions.color === "transparent"}
@@ -478,7 +478,7 @@ export default function ConfigPanel({
           </AccordionItem>
           <AccordionItem value="logo" className="border-b-0">
             <AccordionTrigger>LOGO</AccordionTrigger>
-            <AccordionContent className="p-neo-lg">
+            <AccordionContent className="px-4 py-3 pb-5 pr-10 overflow-x-visible">
               <FormSection>
                 {logoPreview ? (
                   <Button variant="destructive" onClick={onRemoveLogo}>
@@ -529,7 +529,7 @@ export default function ConfigPanel({
         </Accordion>
       </ScrollArea>
 
-      <div className="mt-auto p-8 border-t-2 border-[#1c1c1c]">
+      <div className="mt-auto p-4 border-t-2 border-[#1c1c1c]">
         <Button
           onClick={onGenerateClick}
           disabled={isGenerating || !text.trim()}

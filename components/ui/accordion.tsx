@@ -43,7 +43,7 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className={cn("overflow-hidden text-sm", className)}
+    className={cn("overflow-visible text-sm", className)}
     {...props}
   >
     <motion.div
@@ -56,7 +56,7 @@ const AccordionContent = React.forwardRef<
         damping: 30, 
         duration: 0.2 
       }}
-      className="px-6 pb-6 pt-4"
+      className="px-0 pb-0 pt-0"
     >
       {children}
     </motion.div>

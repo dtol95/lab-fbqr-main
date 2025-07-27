@@ -382,7 +382,7 @@ export default function QRGeneratorPage() {
           </div>
 
           {/* 2-Column Tablet/Medium Desktop Layout */}
-          <div className="hidden lg:grid xl:hidden flex-1 lg:grid-cols-[400px_1fr] min-h-0 w-full">
+          <div className="hidden lg:grid xl:hidden flex-1 lg:grid-cols-[500px_1fr] min-h-0 w-full">
             <ConfigPanel
               key={configPanelKey}
               text={text}
@@ -414,7 +414,7 @@ export default function QRGeneratorPage() {
           </div>
 
           {/* 3-Column Large Desktop Layout */}
-          <div className="hidden xl:grid flex-1 xl:grid-cols-[400px_auto_1fr_auto_400px] min-h-0 w-full">
+          <div className="hidden xl:grid flex-1 xl:grid-cols-[500px_auto_1fr_auto_500px] min-h-0 w-full">
             <ConfigPanel
               key={configPanelKey}
               text={text}

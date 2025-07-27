@@ -58,7 +58,7 @@ export const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(
           type="text"
           value={textValue}
           onChange={handleTextChange}
-          className="uppercase flex-1 min-w-0"
+          className="uppercase w-24"
           maxLength={7}
         />
       </div>

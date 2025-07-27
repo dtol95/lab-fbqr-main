@@ -44,7 +44,7 @@ export function GradientControls({
           checked={useGradient}
           onCheckedChange={(checked) => onUseGradientChange(Boolean(checked))}
         />
-        <Label htmlFor={`use-gradient-${label}`} className="font-sans uppercase font-bold">
+        <Label htmlFor={`use-gradient-${label}`} className="font-sans uppercase font-bold text-base">
           Use Gradient
         </Label>
       </ColorControls>
@@ -59,7 +59,7 @@ export function GradientControls({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="space-neo-md pt-neo-sm">
+            <div className="space-neo-md pt-neo-sm pb-2">
               <ColorGrid columns={2}>
                 <ColorInput
                   value={gradient?.colorStops[0]?.color || "#ff0000"}
@@ -96,7 +96,7 @@ export function GradientControls({
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pt-neo-sm">
+            <div className="pt-neo-sm pb-2">
               <ColorInput value={color} onChange={onColorChange} />
             </div>
           </motion.div>

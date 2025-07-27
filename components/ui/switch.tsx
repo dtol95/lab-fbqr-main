@@ -22,7 +22,9 @@ const Switch = React.forwardRef<
   >
     <SwitchPrimitives.Thumb asChild>
       <motion.div
-        layout
+        animate={{ 
+          x: checked ? 22 : 0 
+        }}
         transition={{ type: "spring", stiffness: 700, damping: 30 }}
         className={cn(
           "pointer-events-none flex items-center justify-center h-7 w-7 rounded-full bg-transparent ring-0",

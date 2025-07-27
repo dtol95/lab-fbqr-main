@@ -15,6 +15,9 @@
     --neo-border-color: #1c1c1c;
     --neo-destructive-accent: 16 100% 50%; /* Orangey-Red */
     --neo-muted-bg: #d1d1d1; /* Light Grey */
+    --neo-success: #32cd32; /* Success green - complements neon accent */
+    --neo-warning: #ff8c00; /* Warning orange - high contrast */
+    --neo-info: #4169e1; /* Info blue - bold and clear */
 
     /* Brutalist Shadow System */
     --neo-shadow-default: 4px 4px 0px var(--neo-border-color);
@@ -60,7 +63,7 @@
     --muted-foreground: var(--neo-text);
     --accent: var(--neo-accent);
     --accent-foreground: var(--neo-text);
-    --destructive: hsl(var(--neo-destructive-accent));
+    --destructive: var(--neo-destructive-accent);
     --destructive-foreground: var(--neo-bg);
     --border: var(--neo-border-color);
     --input: var(--neo-interactive-bg);
@@ -309,6 +312,30 @@
 
   .bg-neo-muted {
     background-color: var(--neo-muted-bg);
+  }
+
+  .bg-neo-success {
+    background-color: var(--neo-success);
+  }
+
+  .bg-neo-warning {
+    background-color: var(--neo-warning);
+  }
+
+  .bg-neo-info {
+    background-color: var(--neo-info);
+  }
+
+  .text-neo-success {
+    color: var(--neo-success);
+  }
+
+  .text-neo-warning {
+    color: var(--neo-warning);
+  }
+
+  .text-neo-info {
+    color: var(--neo-info);
   }
 
   .border-neo {

@@ -10,13 +10,16 @@ const BrutalistSlider = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SliderPrimitive.Root
     ref={ref}
-    className={cn("relative flex w-full touch-none select-none items-center", className)}
+    className={cn(
+      "relative flex w-full touch-none select-none items-center",
+      className
+    )}
     {...props}
   >
-    <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden bg-black/20">
+    <SliderPrimitive.Track className="relative h-3 w-full grow overflow-hidden bg-[var(--neo-interactive-bg)] border-2 border-[var(--neo-text)]">
       <SliderPrimitive.Range className="absolute h-full bg-[var(--neo-accent)]" />
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="block h-6 w-6 border-2 border-[var(--neo-text)] bg-[var(--neo-accent)] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
+    <SliderPrimitive.Thumb className="block h-7 w-7 border-2 border-[var(--neo-text)] bg-[var(--neo-accent)] neo-shadow transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--neo-text)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:neo-shadow-hover cursor-pointer" />
   </SliderPrimitive.Root>
 ))
 BrutalistSlider.displayName = SliderPrimitive.Root.displayName

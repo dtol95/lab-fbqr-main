@@ -1,0 +1,317 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Purely Neutral Brutalist Palette */
+    --page-bg: #cccccc; /* Light grey page background */
+    --neo-bg: #e0e0e0; /* Main element background */
+    --neo-interactive-bg: #f0f0f0; /* Lighter bg for inputs/preview */
+    --neo-text: #1c1c1c; /* Dark charcoal for text and borders */
+    --neo-accent: #e3ff32; /* Neon green accent */
+    --neo-white: #f0f0f0; /* Used for hover states, same as interactive bg */
+    --neo-off-white: #f0f0f0; /* Input background, same as interactive bg */
+    --neo-border-color: #1c1c1c;
+    --neo-destructive-accent: 16 100% 50%; /* Orangey-Red */
+    --neo-muted-bg: #d1d1d1; /* Light Grey */
+
+    /* Brutalist Shadow System */
+    --neo-shadow-default: 4px 4px 0px var(--neo-border-color);
+    --neo-shadow-hover: 2px 2px 0px var(--neo-border-color);
+    --neo-shadow-active: 0px 0px 0px var(--neo-border-color);
+    --neo-shadow-large: 8px 8px 0px var(--neo-border-color);
+    --neo-shadow-none: none;
+
+    /* Brutalist Transform System */
+    --neo-transform-default: translate(0px, 0px);
+    --neo-transform-hover: translate(2px, 2px);
+    --neo-transform-active: translate(4px, 4px);
+
+    /* Brutalist Border System */
+    --neo-border-width: 2px;
+    --neo-border-style: solid;
+    --neo-border-radius: 0rem;
+
+    /* Brutalist Interaction States */
+    --neo-transition-default: all 0.15s ease-in-out;
+    --neo-opacity-disabled: 0.5;
+    --neo-opacity-hover: 0.9;
+
+    /* Brutalist Typography Scale */
+    --neo-font-weight-normal: 500;
+    --neo-font-weight-bold: 700;
+    --neo-font-weight-heading: 900;
+    --neo-letter-spacing-tight: -0.02em;
+    --neo-text-transform-heading: uppercase;
+
+    /* Mapped to existing theme for component compatibility */
+    --background: var(--page-bg);
+    --foreground: var(--neo-text);
+    --card: var(--neo-bg);
+    --card-foreground: var(--neo-text);
+    --popover: var(--neo-bg);
+    --popover-foreground: var(--neo-text);
+    --primary: var(--neo-accent); /* Mapped to neon green */
+    --primary-foreground: var(--neo-text); /* Dark text on neon green */
+    --secondary: var(--neo-text);
+    --secondary-foreground: var(--neo-bg);
+    --muted: var(--neo-muted-bg);
+    --muted-foreground: var(--neo-text);
+    --accent: var(--neo-accent);
+    --accent-foreground: var(--neo-text);
+    --destructive: hsl(var(--neo-destructive-accent));
+    --destructive-foreground: var(--neo-bg);
+    --border: var(--neo-border-color);
+    --input: var(--neo-interactive-bg);
+    --ring: var(--neo-text);
+    --radius: var(--neo-border-radius);
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-weight: 500;
+  }
+  input,
+  textarea {
+    @apply font-sans;
+  }
+}
+
+@layer components {
+  /* Base Brutalist Element */
+  .neo-element {
+    border: var(--neo-border-width) var(--neo-border-style) var(--neo-border-color);
+    border-radius: var(--neo-border-radius);
+    background-color: var(--neo-bg);
+    color: var(--neo-text);
+  }
+
+  /* Brutalist Shadow Variants */
+  .neo-shadow {
+    box-shadow: var(--neo-shadow-default);
+  }
+
+  .neo-shadow-large {
+    box-shadow: var(--neo-shadow-large);
+  }
+
+  .neo-shadow-none {
+    box-shadow: var(--neo-shadow-none);
+  }
+
+  /* Interactive Brutalist Element */
+  .neo-interactive {
+    @apply neo-element neo-shadow;
+    transition: var(--neo-transition-default);
+    transform: var(--neo-transform-default);
+  }
+
+  .neo-interactive:hover {
+    box-shadow: var(--neo-shadow-hover);
+    transform: var(--neo-transform-hover);
+  }
+
+  .neo-interactive:active {
+    box-shadow: var(--neo-shadow-active);
+    transform: var(--neo-transform-active);
+  }
+
+  .neo-interactive:disabled {
+    opacity: var(--neo-opacity-disabled);
+    pointer-events: none;
+  }
+
+  /* Static Brutalist Element (no interactions) */
+  .neo-static {
+    @apply neo-element neo-shadow;
+  }
+
+  /* Enhanced Interactive Element (stronger interactions) */
+  .neo-enhanced {
+    @apply neo-element neo-shadow-large;
+    transition: var(--neo-transition-default);
+    transform: var(--neo-transform-default);
+  }
+
+  .neo-enhanced:hover {
+    box-shadow: var(--neo-shadow-default);
+    transform: var(--neo-transform-hover);
+  }
+
+  .neo-enhanced:active {
+    box-shadow: var(--neo-shadow-hover);
+    transform: var(--neo-transform-active);
+  }
+
+  /* Brutalist Button Base */
+  .neo-button {
+    @apply neo-interactive;
+    @apply inline-flex items-center justify-center whitespace-nowrap;
+    @apply text-base font-bold;
+    @apply w-full;
+    font-weight: var(--neo-font-weight-bold);
+    font-family: var(--font-sans);
+  }
+
+  /* Brutalist Input Base */
+  .neo-input {
+    @apply neo-element;
+    background-color: var(--neo-interactive-bg);
+    font-family: var(--font-sans);
+    font-weight: var(--neo-font-weight-normal);
+  }
+
+  .neo-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--neo-border-color);
+  }
+
+  /* Brutalist Card Base */
+  .neo-card {
+    @apply neo-element neo-shadow-large;
+    background-color: var(--neo-bg);
+  }
+
+  /* Brutalist Typography Utilities */
+  .neo-heading {
+    font-weight: var(--neo-font-weight-heading);
+    text-transform: var(--neo-text-transform-heading);
+    letter-spacing: var(--neo-letter-spacing-tight);
+    color: var(--neo-text);
+  }
+
+  .neo-text {
+    font-weight: var(--neo-font-weight-normal);
+    color: var(--neo-text);
+  }
+
+  .neo-text-bold {
+    font-weight: var(--neo-font-weight-bold);
+    color: var(--neo-text);
+  }
+
+  /* Brutalist Background Variants */
+  .neo-bg-default {
+    background-color: var(--neo-bg);
+  }
+
+  .neo-bg-interactive {
+    background-color: var(--neo-interactive-bg);
+  }
+
+  .neo-bg-accent {
+    background-color: var(--neo-accent);
+    color: var(--neo-text);
+  }
+
+  .neo-bg-destructive {
+    background-color: hsl(var(--neo-destructive-accent));
+    color: var(--neo-text);
+  }
+
+  .neo-bg-muted {
+    background-color: var(--neo-muted-bg);
+  }
+
+  /* Brutalist Border Utilities */
+  .neo-border {
+    border: var(--neo-border-width) var(--neo-border-style) var(--neo-border-color);
+  }
+
+  .neo-border-none {
+    border: none;
+  }
+
+  /* Brutalist Layout Utilities */
+  .neo-container {
+    @apply neo-element;
+    padding: 1.5rem;
+  }
+
+  .neo-section {
+    @apply neo-card;
+    padding: 2rem;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .font-heading {
+    /* This should be the custom Gainsborough font. 
+       It will be available via the --font-gainsborough variable 
+       once the font file is added and configured in layout.tsx.
+       For now, it falls back to the default sans-serif font. */
+    font-family: var(--font-gainsborough, var(--font-sans));
+    font-weight: var(--neo-font-weight-heading);
+    text-transform: var(--neo-text-transform-heading);
+    letter-spacing: var(--neo-letter-spacing-tight);
+  }
+
+  /* Additional Brutalist Utility Classes */
+  .shadow-neo {
+    box-shadow: var(--neo-shadow-default);
+  }
+
+  .shadow-neo-large {
+    box-shadow: var(--neo-shadow-large);
+  }
+
+  .shadow-neo-hover {
+    box-shadow: var(--neo-shadow-hover);
+  }
+
+  .shadow-neo-none {
+    box-shadow: var(--neo-shadow-none);
+  }
+
+  .transform-neo {
+    transform: var(--neo-transform-default);
+  }
+
+  .transform-neo-hover {
+    transform: var(--neo-transform-hover);
+  }
+
+  .transform-neo-active {
+    transform: var(--neo-transform-active);
+  }
+
+  .transition-neo {
+    transition: var(--neo-transition-default);
+  }
+
+  /* Brutalist Color Utilities */
+  .text-neo {
+    color: var(--neo-text);
+  }
+
+  .text-neo-accent {
+    color: var(--neo-accent);
+  }
+
+  .bg-neo {
+    background-color: var(--neo-bg);
+  }
+
+  .bg-neo-interactive {
+    background-color: var(--neo-interactive-bg);
+  }
+
+  .bg-neo-accent {
+    background-color: var(--neo-accent);
+  }
+
+  .bg-neo-muted {
+    background-color: var(--neo-muted-bg);
+  }
+
+  .border-neo {
+    border-color: var(--neo-border-color);
+  }
+}

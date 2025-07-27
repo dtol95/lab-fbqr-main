@@ -1,15 +1,19 @@
 import Link from "next/link"
 import AuthButton from "@/components/auth-button"
-import { ChevronLeft } from "lucide-react"
+import { ChevronLeft, Undo2, Redo2 } from "lucide-react"
 import type { User } from "@supabase/supabase-js"
 
 type PageHeaderProps = {
   title: string
   user: User | null
   onLoginClick: () => void
+  canUndo?: boolean
+  canRedo?: boolean
+  onUndo?: () => void
+  onRedo?: () => void
 }
 
-export function PageHeader({ title, user, onLoginClick }: PageHeaderProps) {
+export function PageHeader({ title, user, onLoginClick, canUndo, canRedo, onUndo, onRedo }: PageHeaderProps) {
   return (
     <header className="flex items-stretch justify-between w-full flex-shrink-0 border-b-2 border-b-[#1c1c1c]">
       <div className="p-4 flex items-center gap-4">
@@ -22,6 +26,39 @@ export function PageHeader({ title, user, onLoginClick }: PageHeaderProps) {
         </Link>
         <div className="w-px h-8 bg-neo-text mx-2 hidden sm:block" />
         <h1 className="font-heading text-5xl md:text-6xl">{title}</h1>
+        
+        {/* Undo/Redo Controls */}
+        {(canUndo || canRedo) && (
+          <>
+            <div className="w-px h-8 bg-neo-text mx-2 hidden md:block" />
+            <div className="hidden md:flex items-center gap-2">
+              <button
+                onClick={onUndo}
+                disabled={!canUndo}
+                className={`p-2 transition-all ${
+                  canUndo 
+                    ? 'text-neo-text hover:text-neo-accent hover:bg-neo-accent/10' 
+                    : 'text-neo-text/30 cursor-not-allowed'
+                }`}
+                title="Undo (Ctrl+Z)"
+              >
+                <Undo2 className="w-4 h-4" />
+              </button>
+              <button
+                onClick={onRedo}
+                disabled={!canRedo}
+                className={`p-2 transition-all ${
+                  canRedo 
+                    ? 'text-neo-text hover:text-neo-accent hover:bg-neo-accent/10' 
+                    : 'text-neo-text/30 cursor-not-allowed'
+                }`}
+                title="Redo (Ctrl+Shift+Z)"
+              >
+                <Redo2 className="w-4 h-4" />
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <div className="border-l-2 border-l-[#1c1c1c] p-4 flex items-center">
         <AuthButton user={user} onLoginClick={onLoginClick} />

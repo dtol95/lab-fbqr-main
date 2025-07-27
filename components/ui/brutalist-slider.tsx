@@ -14,9 +14,9 @@ const BrutalistSlider = React.forwardRef<
     {...props}
   >
     <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden bg-black/20">
-      <SliderPrimitive.Range className="absolute h-full bg-[var(--neo-text)]" />
+      <SliderPrimitive.Range className="absolute h-full bg-[var(--neo-accent)]" />
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="block h-6 w-6 border-[var(--neo-border-width)] border-[var(--neo-text)] bg-[var(--neo-white)] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
+    <SliderPrimitive.Thumb className="block h-6 w-6 border-2 border-[var(--neo-text)] bg-[var(--neo-accent)] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50" />
   </SliderPrimitive.Root>
 ))
 BrutalistSlider.displayName = SliderPrimitive.Root.displayName

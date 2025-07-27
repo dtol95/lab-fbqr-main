@@ -4,6 +4,7 @@ import type React from "react"
 import { useState, useCallback, useEffect } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { useDebouncedCallback } from "use-debounce"
+import { useHistory } from "@/hooks/use-history"
 import ConfigPanel from "@/components/config-panel"
 import PreviewPanel from "@/components/preview-panel"
 import CollectionPanel from "@/components/collection-panel"
@@ -131,20 +132,43 @@ export default function QRGeneratorPage() {
     loadCollection()
   }, [user, isCollectionLoaded, toast])
 
-  const [style, setStyle] = useState<QRStyleOptions>(defaultOptions)
+  // Use history hook for style management with undo/redo
+  const {
+    state: style,
+    set: setStyle,
+    undo: undoStyle,
+    redo: redoStyle,
+    canUndo,
+    canRedo
+  } = useHistory<QRStyleOptions>(defaultOptions, {
+    maxHistorySize: 50,
+    debounceMs: 300
+  })
+
+  // Ensure style is always properly structured (defensive programming)
+  const safeStyle = {
+    ...defaultOptions,
+    ...style,
+    dotsOptions: { ...defaultOptions.dotsOptions, ...style?.dotsOptions },
+    backgroundOptions: { ...defaultOptions.backgroundOptions, ...style?.backgroundOptions },
+    cornersSquareOptions: { ...defaultOptions.cornersSquareOptions, ...style?.cornersSquareOptions },
+    cornersDotOptions: { ...defaultOptions.cornersDotOptions, ...style?.cornersDotOptions },
+    imageOptions: { ...defaultOptions.imageOptions, ...style?.imageOptions },
+    qrOptions: { ...defaultOptions.qrOptions, ...style?.qrOptions }
+  }
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
 
   const handleStyleChange = useCallback((newOptions: Partial<QRStyleOptions>) => {
     setStyle((prev) => ({ ...prev, ...newOptions }))
-  }, [])
+  }, [setStyle])
 
   const handleSizeChange = useCallback((size: number) => {
     setStyle((prev) => {
       if (prev.width === size) return prev
       return { ...prev, width: size }
     })
-  }, [])
+  }, [setStyle])
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -206,7 +230,7 @@ export default function QRGeneratorPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...style,
+          ...safeStyle,
           width: 64,
           data: text,
           image: logoPreview,
@@ -222,7 +246,7 @@ export default function QRGeneratorPage() {
         id: Date.now().toString(),
         text: text,
         originalUrl: originalUrl,
-        qrConfig: { ...style, data: text, image: logoPreview },
+        qrConfig: { ...safeStyle, data: text, image: logoPreview },
         thumbnail: thumbnailDataUrl,
         createdAt: new Date().toISOString(),
       }
@@ -268,6 +292,43 @@ export default function QRGeneratorPage() {
     setText(newText)
   }, [])
 
+  // Keyboard shortcuts for undo/redo
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check if we're in an input field
+      const target = event.target as HTMLElement
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.contentEditable === 'true') {
+        return
+      }
+
+      if ((event.metaKey || event.ctrlKey) && !event.shiftKey && event.key === 'z') {
+        event.preventDefault()
+        if (canUndo) {
+          undoStyle()
+          toast({ 
+            title: "Undone", 
+            description: "Reverted to previous design state",
+            variant: "default"
+          })
+        }
+      } else if (((event.metaKey || event.ctrlKey) && event.shiftKey && event.key === 'z') || 
+                 ((event.metaKey || event.ctrlKey) && event.key === 'y')) {
+        event.preventDefault()
+        if (canRedo) {
+          redoStyle()
+          toast({ 
+            title: "Redone", 
+            description: "Restored next design state",
+            variant: "default"
+          })
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [canUndo, canRedo, undoStyle, redoStyle, toast])
+
   return (
     <>
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} redirectTo="/fbqr" />
@@ -276,21 +337,29 @@ export default function QRGeneratorPage() {
           className="bg-[#EAEAEA] border-2 border-[#1c1c1c] flex flex-col min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)]"
           style={{ boxShadow: `8px 8px 0px #1c1c1c` }}
         >
-          <PageHeader title="FBQR" user={user} onLoginClick={() => setIsAuthModalOpen(true)} />
+          <PageHeader 
+            title="FBQR" 
+            user={user} 
+            onLoginClick={() => setIsAuthModalOpen(true)}
+            canUndo={canUndo}
+            canRedo={canRedo}
+            onUndo={undoStyle}
+            onRedo={redoStyle}
+          />
 
           {/* Mobile Layout */}
           <div className="lg:hidden flex-1 min-h-0">
             <ScrollArea className="h-full">
               <div className="flex flex-col">
                 <div className="border-b-2 border-[#1c1c1c]">
-                  <PreviewPanel text={text} style={style} logoPreview={logoPreview} onSizeChange={handleSizeChange} />
+                  <PreviewPanel text={text} style={safeStyle} logoPreview={logoPreview} onSizeChange={handleSizeChange} />
                 </div>
                 <div className="border-b-2 border-[#1c1c1c]">
                   <ConfigPanel
                     key={configPanelKey}
                     text={text}
                     onTextChange={handleTextChange}
-                    styleOptions={style}
+                    styleOptions={safeStyle}
                     onStyleChange={handleStyleChange}
                     onGenerateClick={handleGenerateClick}
                     isGenerating={isGenerating}
@@ -318,7 +387,7 @@ export default function QRGeneratorPage() {
               key={configPanelKey}
               text={text}
               onTextChange={handleTextChange}
-              styleOptions={style}
+              styleOptions={safeStyle}
               onStyleChange={handleStyleChange}
               onGenerateClick={handleGenerateClick}
               isGenerating={isGenerating}
@@ -330,7 +399,7 @@ export default function QRGeneratorPage() {
             />
             <div className="flex flex-col border-l-2 border-[#1c1c1c]">
               <div className="border-b-2 border-[#1c1c1c]">
-                <PreviewPanel text={text} style={style} logoPreview={logoPreview} onSizeChange={handleSizeChange} />
+                <PreviewPanel text={text} style={safeStyle} logoPreview={logoPreview} onSizeChange={handleSizeChange} />
               </div>
               <div className="flex-1 min-h-0">
                 <CollectionPanel
@@ -350,7 +419,7 @@ export default function QRGeneratorPage() {
               key={configPanelKey}
               text={text}
               onTextChange={handleTextChange}
-              styleOptions={style}
+              styleOptions={safeStyle}
               onStyleChange={handleStyleChange}
               onGenerateClick={handleGenerateClick}
               isGenerating={isGenerating}
@@ -361,7 +430,7 @@ export default function QRGeneratorPage() {
               isShortening={isShortening}
             />
             <VerticalDivider />
-            <PreviewPanel text={text} style={style} logoPreview={logoPreview} onSizeChange={handleSizeChange} />
+            <PreviewPanel text={text} style={safeStyle} logoPreview={logoPreview} onSizeChange={handleSizeChange} />
             <VerticalDivider />
             <CollectionPanel
               qrCodes={qrCodes}

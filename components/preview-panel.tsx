@@ -31,6 +31,7 @@ export default function PreviewPanel({ text, style, logoPreview, onSizeChange }:
   const [svgContent, setSvgContent] = useState<string>("")
   const [validationStatus, setValidationStatus] = useState<ValidationState>("idle")
   const [isLoading, setIsLoading] = useState(false)
+  const [animationKey, setAnimationKey] = useState(0)
   const validationRef = useRef(0)
 
   const { ref: containerRef, width } = useResizeObserver<HTMLDivElement>()
@@ -75,6 +76,7 @@ export default function PreviewPanel({ text, style, logoPreview, onSizeChange }:
         if (validationRef.current !== currentValidationId) return
 
         setSvgContent(svg)
+        setAnimationKey(prev => prev + 1) // Trigger animation on update
 
         const image = new Image()
         image.crossOrigin = "anonymous"
@@ -149,7 +151,16 @@ export default function PreviewPanel({ text, style, logoPreview, onSizeChange }:
           </AnimatePresence>
 
           {svgContent && (
-            <img
+            <motion.img
+              key={animationKey}
+              initial={{ opacity: 0.7, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                duration: 0.3, 
+                ease: "easeOut",
+                opacity: { duration: 0.2 },
+                scale: { duration: 0.3 }
+              }}
               className="w-full h-full object-contain"
               src={`data:image/svg+xml;base64,${btoa(svgContent)}`}
               alt="Generated QR Code"

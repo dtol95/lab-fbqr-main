@@ -318,10 +318,14 @@ export default function ConfigPanel({
               variant={activeTab === ct.id ? "secondary" : "outline"}
               onClick={() => handleTabChange(ct.id)}
               size="sm"
-              className="flex items-center justify-center gap-2"
+              className={`flex items-center justify-center gap-2 ${
+                activeTab === ct.id 
+                  ? "bg-[var(--neo-accent)] text-[var(--neo-text)] shadow-neo-hover transform-neo-hover" 
+                  : ""
+              }`}
               noShadow={activeTab === ct.id}
             >
-              <ct.icon className="w-5 h-5" />
+              <ct.icon className="w-6 h-6" />
               <span className="hidden sm:inline">{ct.label}</span>
             </Button>
           ))}
@@ -525,6 +529,12 @@ export default function ConfigPanel({
         >
           {isGenerating ? "GENERATING..." : "ADD TO COLLECTION"}
         </Button>
+        
+        {/* Subtle hint about undo/redo functionality */}
+        <div className="mt-2 text-xs text-neo-text/60 text-center">
+          <span className="hidden sm:inline">Use Ctrl+Z to undo, Ctrl+Shift+Z to redo design changes</span>
+          <span className="sm:hidden">Undo/redo available via header buttons</span>
+        </div>
       </div>
     </div>
   )

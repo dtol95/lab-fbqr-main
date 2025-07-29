@@ -363,7 +363,7 @@ export default function ConfigPanel({
                   </Select>
                 </FormField>
                 <GradientControls
-                  label="dots"
+                  label="Dots Color"
                   color={styleOptions.dotsOptions.color || "#1c1c1c"}
                   onColorChange={(c) => handleGradientOptionChange("dotsOptions", { color: c })}
                   useGradient={styleOptions.dotsOptions.useGradient}
@@ -403,7 +403,7 @@ export default function ConfigPanel({
                     </Select>
                   </FormField>
                   <GradientControls
-                    label="corners-square"
+                    label="Corner Squares Color"
                     color={styleOptions.cornersSquareOptions?.color || "#1c1c1c"}
                     onColorChange={(c) => handleGradientOptionChange("cornersSquareOptions", { color: c })}
                     useGradient={styleOptions.cornersSquareOptions.useGradient}
@@ -437,7 +437,7 @@ export default function ConfigPanel({
                     </Select>
                   </FormField>
                   <GradientControls
-                    label="corners-dot"
+                    label="Corner Dots Color"
                     color={styleOptions.cornersDotOptions?.color || "#1c1c1c"}
                     onColorChange={(c) => handleGradientOptionChange("cornersDotOptions", { color: c })}
                     useGradient={styleOptions.cornersDotOptions.useGradient}
@@ -469,7 +469,7 @@ export default function ConfigPanel({
                 </ColorControls>
                 {styleOptions.backgroundOptions.color !== "transparent" && (
                   <GradientControls
-                    label="background"
+                    label="Background Color"
                     color={styleOptions.backgroundOptions.color || "#e0e0e0"}
                     onColorChange={(c) => handleGradientOptionChange("backgroundOptions", { color: c })}
                     useGradient={styleOptions.backgroundOptions.useGradient}

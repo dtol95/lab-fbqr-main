@@ -1,7 +1,7 @@
 "use client"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
-import { ColorInput } from "@/components/ui/color-input"
+import { ColorField } from "@/components/ui/color-picker/color-field"
 import { BrutalistSlider } from "@/components/ui/brutalist-slider"
 import { FormField, ColorControls, ColorGrid } from "@/components/ui/form-layout"
 import type { Gradient } from "@/types"
@@ -61,13 +61,13 @@ export function GradientControls({
           >
             <div className="space-neo-md pt-neo-sm pb-2">
               <ColorGrid columns={2}>
-                <ColorInput
-                  value={gradient?.colorStops[0]?.color || "#ff0000"}
-                  onChange={(c) => handleColorStopChange(0, c)}
+                <ColorField
+                  color={gradient?.colorStops[0]?.color || "#ff0000"}
+                  onColorChange={(c) => handleColorStopChange(0, c)}
                 />
-                <ColorInput
-                  value={gradient?.colorStops[1]?.color || "#0000ff"}
-                  onChange={(c) => handleColorStopChange(1, c)}
+                <ColorField
+                  color={gradient?.colorStops[1]?.color || "#0000ff"}
+                  onColorChange={(c) => handleColorStopChange(1, c)}
                 />
               </ColorGrid>
               <FormField>
@@ -97,7 +97,7 @@ export function GradientControls({
             className="overflow-hidden"
           >
             <div className="pt-neo-sm pb-2">
-              <ColorInput value={color} onChange={onColorChange} />
+              <ColorField color={color} onColorChange={onColorChange} />
             </div>
           </motion.div>
         )}

@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Switch } from "@/components/ui/switch"
 import { BrutalistSlider } from "@/components/ui/brutalist-slider"
-import { ColorInput } from "@/components/ui/color-input"
+import { ColorField } from "@/components/ui/color-picker/color-field"
 
 // Layout Components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -1021,14 +1021,117 @@ const BasicControlsShowcase = () => {
               <Textarea id="demo-textarea" placeholder="Enter longer text" rows={3} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="demo-color">Color Input</Label>
-              <ColorInput value="#e3ff32" onChange={() => {}} />
+              <Label htmlFor="demo-color">Color Picker</Label>
+              <ColorField 
+                label="Accent Color" 
+                value={{ mode: 'solid', hex: '#e3ff32', alpha: 100 }} 
+                onChange={() => {}} 
+                allowGradient={true}
+              />
             </div>
           </div>
         }
         code={`<Input placeholder="Enter text here" />
 <Textarea placeholder="Enter longer text" rows={3} />
-<ColorInput value="#e3ff32" onChange={setColor} />`}
+<ColorField 
+  label="Color" 
+  value={{ mode: 'solid', hex: '#e3ff32' }} 
+  onChange={setColor} 
+  allowGradient={true}
+/>`}
+      />
+      <ComponentShowcase
+        title="Advanced Color Picker"
+        description="Brutalist color picker with solid colors, gradients, HSL controls, and presets"
+        preview={
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            <div className="space-y-4">
+              <ColorField 
+                label="Solid Color"
+                value={{ mode: 'solid', hex: '#E3FF32', alpha: 100 }}
+                onChange={() => {}}
+                allowGradient={false}
+              />
+              <ColorField 
+                label="Color with Alpha"
+                value={{ mode: 'solid', hex: '#E74C3C', alpha: 75 }}
+                onChange={() => {}}
+                allowGradient={false}
+              />
+            </div>
+            <div className="space-y-4">
+              <ColorField 
+                label="Linear Gradient"
+                value={{ 
+                  mode: 'linear', 
+                  gradient: { 
+                    type: 'linear', 
+                    rotation: 45, 
+                    colorStops: [
+                      { color: '#E3FF32', offset: 0 },
+                      { color: '#E74C3C', offset: 1 }
+                    ]
+                  }
+                }}
+                onChange={() => {}}
+                allowGradient={true}
+              />
+              <ColorField 
+                label="Vertical Gradient"
+                value={{ 
+                  mode: 'linear', 
+                  gradient: { 
+                    type: 'linear', 
+                    rotation: 90, 
+                    colorStops: [
+                      { color: '#1C1C1C', offset: 0 },
+                      { color: '#FAFAFA', offset: 1 }
+                    ]
+                  }
+                }}
+                onChange={() => {}}
+                allowGradient={true}
+              />
+            </div>
+          </div>
+        }
+        code={`// Solid color
+<ColorField 
+  label="Accent Color"
+  value={{ mode: 'solid', hex: '#E3FF32', alpha: 100 }}
+  onChange={setColor}
+  allowGradient={false}
+/>
+
+// Linear gradient
+<ColorField 
+  label="Background Gradient"
+  value={{ 
+    mode: 'linear', 
+    gradient: { 
+      type: 'linear', 
+      rotation: 45, 
+      colorStops: [
+        { color: '#E3FF32', offset: 0 },
+        { color: '#E74C3C', offset: 1 }
+      ]
+    }
+  }}
+  onChange={setGradient}
+  allowGradient={true}
+/>
+
+// Backward compatibility with existing gradient system
+<ColorField 
+  label="Legacy Integration"
+  color={solidColor}
+  onColorChange={setSolidColor}
+  useGradient={useGradient}
+  onUseGradientChange={setUseGradient}
+  gradient={gradient}
+  onGradientChange={setGradient}
+  allowGradient={true}
+/>`}
       />
 
       <ComponentShowcase

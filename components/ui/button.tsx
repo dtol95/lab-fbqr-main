@@ -9,8 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[var(--neo-accent)] text-[var(--neo-text)] hover:bg-[var(--neo-accent)]/90",
-        destructive: "bg-[hsl(var(--neo-destructive-accent))] text-[var(--neo-text)] hover:bg-[hsl(var(--neo-destructive-accent),0.9)]",
+        default: "bg-[var(--neo-accent)] text-[var(--neo-on-accent)] hover:bg-[var(--neo-accent)]/90",
+        destructive: "bg-[var(--neo-destructive)] text-[var(--neo-on-destructive)] hover:bg-[var(--neo-destructive)]/90",
         outline: "bg-transparent hover:bg-[var(--neo-text)]/5",
         secondary: "bg-[var(--neo-interactive-bg)] text-[var(--neo-text)] hover:bg-[var(--neo-bg)]",
         ghost: "neo-border-none neo-shadow-none hover:bg-accent hover:text-accent-foreground",

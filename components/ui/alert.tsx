@@ -9,10 +9,10 @@ const alertVariants = cva(
     variants: {
       variant: {
         default: "bg-neo-accent text-neo-text [&>svg]:text-neo-text",
-        destructive: "bg-destructive text-destructive-foreground [&>svg]:text-destructive-foreground",
-        success: "bg-neo-success text-neo-text [&>svg]:text-neo-text",
-        warning: "bg-neo-warning text-neo-text [&>svg]:text-neo-text",
-        info: "bg-neo-info text-neo-text [&>svg]:text-neo-text",
+        destructive: "bg-[var(--neo-destructive)] text-[var(--neo-on-destructive)] [&>svg]:text-[var(--neo-on-destructive)]",
+        success: "bg-[var(--neo-success)] text-[var(--neo-on-success)] [&>svg]:text-[var(--neo-on-success)]",
+        warning: "bg-[var(--neo-warning)] text-[var(--neo-on-warning)] [&>svg]:text-[var(--neo-on-warning)]",
+        info: "bg-[var(--neo-info)] text-[var(--neo-on-info)] [&>svg]:text-[var(--neo-on-info)]",
       },
     },
     defaultVariants: {

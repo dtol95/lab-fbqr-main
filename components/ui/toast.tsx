@@ -29,8 +29,10 @@ const toastVariants = cva(
     variants: {
       variant: {
         default: "bg-[var(--neo-bg)]",
-        success: "bg-[var(--neo-accent)]",
-        destructive: "bg-[hsl(var(--neo-destructive-accent))]",
+        success: "bg-[var(--neo-success)] text-[var(--neo-on-success)]",
+        destructive: "bg-[var(--neo-destructive)] text-[var(--neo-on-destructive)]",
+        warning: "bg-[var(--neo-warning)] text-[var(--neo-on-warning)]",
+        info: "bg-[var(--neo-info)] text-[var(--neo-on-info)]",
       },
     },
     defaultVariants: {

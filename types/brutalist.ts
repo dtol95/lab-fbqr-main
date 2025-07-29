@@ -197,7 +197,6 @@ export type BrutalistCSSVariable =
   | '--neo-text'
   | '--neo-accent'
   | '--neo-border-color'
-  | '--neo-destructive-accent'
   | '--neo-shadow-default'
   | '--neo-shadow-hover'
   | '--neo-shadow-active'

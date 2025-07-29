@@ -45,7 +45,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 // Interactive Components
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Modal, ModalContent, ModalHeader, ModalTitle, ModalBody, ModalFooter, ModalTrigger } from "@/components/ui/modal"
+import { Popover, PopoverContent, PopoverTrigger, PopoverHeader, PopoverTitle, PopoverBody, PopoverFooter } from "@/components/ui/popover"
+import { BrutalistTooltip, BrutalistTooltipContent, BrutalistTooltipProvider, BrutalistTooltipTrigger, SimpleTooltip } from "@/components/ui/brutalist-tooltip"
+import { DataTable, DataTableHeader, DataTableBody, DataTableRow, DataTableHead, DataTableCell, SortableHeader, SelectableHeader, DataTableEmptyState, DataTableLoadingState } from "@/components/ui/data-table"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 
@@ -60,23 +63,73 @@ import { FormSection, FormGroup, FormField, FormControls } from "@/components/ui
 import { CloseButton } from "@/components/ui/close-button"
 import { useToast } from "@/hooks/use-toast"
 import { extractJSXCode } from "@/lib/code-extractor"
+import { Toolbar, ToolbarItem } from "@/components/ui/toolbar"
+
+// Template Components
+import { 
+  AppFrame, 
+  AppHeader, 
+  AppSidebar, 
+  AppMain, 
+  AppFooter,
+  AppNavigation,
+  AppBrand,
+  AppActions,
+  AppSidebarNav,
+  AppSidebarSection,
+  AppSidebarItem 
+} from "@/components/templates/app-frame"
+import { 
+  SettingsPage,
+  SettingsHeader,
+  SettingsSection,
+  SettingsItem,
+  SettingsField,
+  SettingsGroup,
+  SettingsCardItem,
+  SettingsDangerZone 
+} from "@/components/templates/settings-page"
+import { 
+  FormPage,
+  FormHeader,
+  FormContent,
+  FormSection as FormPageSection,
+  FormActions,
+  FormCard,
+  FormStepIndicator,
+  FormErrorSummary,
+  FormSuccessMessage 
+} from "@/components/templates/form-page"
+
+// Documentation Components
+import {
+  ComponentAPI,
+  AccessibilityNote,
+  BestPractices,
+  ComponentStates,
+  VariantMatrix,
+  UsageExamples
+} from "@/components/style-guide/documentation-components"
 
 
-// Navigation component for atomic design sections
-const AtomicNavigation = ({ activeSection, onSectionChange }: {
+// Navigation component for design system sections
+const DesignSystemNavigation = ({ activeSection, onSectionChange }: {
   activeSection: string
   onSectionChange: (section: string) => void
 }) => {
   const sections = [
+    { id: "foundations", label: "Foundations", description: "Design tokens & rules" },
+    { id: "icons", label: "Icons", description: "Icon system & usage" },
     { id: "atoms", label: "Atoms", description: "Basic building blocks" },
     { id: "molecules", label: "Molecules", description: "Simple combinations" },
     { id: "organisms", label: "Organisms", description: "Complex components" },
-    { id: "templates", label: "Templates", description: "Page layouts" }
+    { id: "templates", label: "Templates", description: "Page layouts" },
+    { id: "guidelines", label: "Guidelines", description: "Accessibility & standards" }
   ]
 
   return (
     <div className="border-2 border-neo-text mb-8">
-      <div className="grid grid-cols-4 gap-0">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-0">
         {sections.map((section) => (
           <button
             key={section.id}
@@ -190,6 +243,167 @@ const ComponentShowcase = ({
     </Card>
   )
 }
+
+// FOUNDATIONS SECTION COMPONENTS
+
+// Motion & Easing showcase
+const MotionSystemShowcase = () => (
+  <div className="grid gap-8">
+    <ComponentShowcase
+      title="Motion & Easing System"
+      description="Standardized timing and easing functions for consistent animations"
+      preview={
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 bg-neo-accent border-2 border-neo-text mx-auto transition-transform duration-[var(--neo-duration-fast)] ease-[var(--neo-ease-standard)] hover:translate-x-2">
+            </div>
+            <p className="font-mono text-sm">Fast (0.1s)</p>
+            <p className="text-xs text-muted-foreground">Quick feedback</p>
+          </div>
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 bg-neo-accent border-2 border-neo-text mx-auto transition-transform duration-[var(--neo-duration-std)] ease-[var(--neo-ease-standard)] hover:translate-x-2">
+            </div>
+            <p className="font-mono text-sm">Standard (0.15s)</p>
+            <p className="text-xs text-muted-foreground">Default transitions</p>
+          </div>
+          <div className="text-center space-y-4">
+            <div className="w-16 h-16 bg-neo-accent border-2 border-neo-text mx-auto transition-transform duration-[var(--neo-duration-slow)] ease-[var(--neo-ease-emphasized)] hover:translate-x-2">
+            </div>
+            <p className="font-mono text-sm">Slow (0.3s)</p>
+            <p className="text-xs text-muted-foreground">Emphasized motion</p>
+          </div>
+        </div>
+      }
+      code={`/* Motion & Easing Tokens */
+--neo-duration-fast: 0.1s;    /* Quick feedback */
+--neo-duration-std: 0.15s;    /* Default transitions */
+--neo-duration-slow: 0.3s;    /* Emphasized motion */
+--neo-ease-standard: ease-in-out;
+--neo-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+/* Usage */
+.hover-transition {
+  transition: transform var(--neo-duration-std) var(--neo-ease-standard);
+}
+
+.hover-transition:hover {
+  transform: translateX(0.5rem);
+}`}
+    />
+
+    <ComponentShowcase
+      title="Focus & Outline System"
+      description="Standardized focus indicators for accessibility"
+      preview={
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          <div className="space-y-4">
+            <h4 className="font-bold">Outline Focus</h4>
+            <button className="focus-ring p-3 bg-neo-accent border-2 border-neo-text font-bold">
+              Focus me (outline)
+            </button>
+          </div>
+          <div className="space-y-4">
+            <h4 className="font-bold">Inset Focus</h4>
+            <input 
+              placeholder="Focus me (inset)"
+              className="focus-ring-inset p-3 bg-neo-interactive-bg border-2 border-neo-text w-full"
+            />
+          </div>
+        </div>
+      }
+      code={`/* Focus System Tokens */
+--neo-focus-ring: var(--neo-text);
+--neo-focus-width: 2px;
+--neo-focus-offset: 2px;
+
+/* Focus Utilities */
+.focus-ring:focus-visible {
+  outline: var(--neo-focus-width) solid var(--neo-focus-ring);
+  outline-offset: var(--neo-focus-offset);
+}
+
+.focus-ring-inset:focus-visible {
+  box-shadow: inset 0 0 0 var(--neo-focus-width) var(--neo-focus-ring);
+}`}
+    />
+  </div>
+)
+
+// Z-Index & Elevation showcase
+const ElevationSystemShowcase = () => (
+  <div className="grid gap-8">
+    <ComponentShowcase
+      title="Z-Index Scale"
+      description="Layering system for predictable stacking contexts"
+      preview={
+        <div className="relative h-48 w-full overflow-hidden border-2 border-neo-text bg-neo-interactive-bg">
+          <div className="absolute bottom-4 left-4 w-24 h-24 bg-neo-bg border-2 border-neo-text flex items-center justify-center text-xs font-bold" style={{ zIndex: 'var(--z-header)' }}>
+            Header (100)
+          </div>
+          <div className="absolute bottom-8 left-8 w-24 h-24 bg-neo-accent border-2 border-neo-text flex items-center justify-center text-xs font-bold" style={{ zIndex: 'var(--z-sidebar)' }}>
+            Sidebar (200)
+          </div>
+          <div className="absolute bottom-12 left-12 w-24 h-24 bg-neo-destructive text-white border-2 border-neo-text flex items-center justify-center text-xs font-bold" style={{ zIndex: 'var(--z-overlay)' }}>
+            Overlay (300)
+          </div>
+          <div className="absolute bottom-16 left-16 w-24 h-24 bg-neo-success text-white border-2 border-neo-text flex items-center justify-center text-xs font-bold" style={{ zIndex: 'var(--z-modal)' }}>
+            Modal (400)
+          </div>
+        </div>
+      }
+      code={`/* Z-Index Scale */
+--z-header: 100;      /* Site header, navigation */
+--z-sidebar: 200;     /* Sidebar panels */
+--z-overlay: 300;     /* Overlays, dropdowns */
+--z-modal: 400;       /* Modal dialogs */
+--z-toast: 500;       /* Toast notifications */
+--z-tooltip: 600;     /* Tooltips (highest)`}
+    />
+
+    <ComponentShowcase
+      title="Elevation Guidelines"
+      description="When to use different shadow variants for visual hierarchy"
+      preview={
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          <div className="text-center space-y-4">
+            <div className="w-24 h-24 bg-neo-bg border-2 border-neo-text neo-shadow-none mx-auto flex items-center justify-center font-bold text-sm">
+              FLAT
+            </div>
+            <p className="font-mono text-sm">None</p>
+            <p className="text-xs text-muted-foreground">Inline content, text</p>
+          </div>
+          <div className="text-center space-y-4">
+            <div className="w-24 h-24 bg-neo-bg border-2 border-neo-text neo-shadow mx-auto flex items-center justify-center font-bold text-sm">
+              DEFAULT
+            </div>
+            <p className="font-mono text-sm">Standard</p>
+            <p className="text-xs text-muted-foreground">Buttons, cards, inputs</p>
+          </div>
+          <div className="text-center space-y-4">
+            <div className="w-24 h-24 bg-neo-bg border-2 border-neo-text neo-shadow-large mx-auto flex items-center justify-center font-bold text-sm">
+              LARGE
+            </div>
+            <p className="font-mono text-sm">Elevated</p>
+            <p className="text-xs text-muted-foreground">Modals, sheets, panels</p>
+          </div>
+        </div>
+      }
+      code={`/* Elevation Guidelines */
+
+/* No Shadow - Inline content */
+.neo-shadow-none { box-shadow: none; }
+// Use for: text, inline elements, flat surfaces
+
+/* Default Shadow - Interactive elements */  
+.neo-shadow { box-shadow: 4px 4px 0px var(--neo-border-color); }
+// Use for: buttons, cards, inputs, interactive elements
+
+/* Large Shadow - Elevated surfaces */
+.neo-shadow-large { box-shadow: 8px 8px 0px var(--neo-border-color); }  
+// Use for: modals, sheets, panels, prominent containers`}
+    />
+  </div>
+)
 
 // ATOMS SECTION COMPONENTS
 
@@ -319,50 +533,89 @@ const ColorSystemShowcase = () => (
 const IconsShowcase = () => (
   <div className="grid gap-8">
     <ComponentShowcase
-      title="Icon System"
+      title="Icon Sizing Scale"
+      description="Standardized icon sizing utilities for consistent usage"
+      preview={
+        <div className="grid grid-cols-4 gap-6 w-full">
+          <div className="text-center space-y-2">
+            <Home className="icon-xs mx-auto" />
+            <p className="text-xs font-mono">icon-xs</p>
+            <p className="text-xs text-muted-foreground">16px</p>
+          </div>
+          <div className="text-center space-y-2">
+            <User className="icon-sm mx-auto" />
+            <p className="text-xs font-mono">icon-sm</p>
+            <p className="text-xs text-muted-foreground">20px</p>
+          </div>
+          <div className="text-center space-y-2">
+            <Settings className="icon-md mx-auto" />
+            <p className="text-xs font-mono">icon-md</p>
+            <p className="text-xs text-muted-foreground">24px</p>
+          </div>
+          <div className="text-center space-y-2">
+            <Search className="icon-lg mx-auto" />
+            <p className="text-xs font-mono">icon-lg</p>
+            <p className="text-xs text-muted-foreground">32px</p>
+          </div>
+        </div>
+      }
+      code={`/* Icon Sizing Utilities */
+.icon-xs { width: 1rem; height: 1rem; }     /* 16px */
+.icon-sm { width: 1.25rem; height: 1.25rem; } /* 20px */
+.icon-md { width: 1.5rem; height: 1.5rem; }   /* 24px */
+.icon-lg { width: 2rem; height: 2rem; }       /* 32px */
+
+// Usage - Replace w-4/w-6/w-8 with semantic sizes
+<Home className="icon-md" />
+<User className="icon-sm" /> 
+<Settings className="icon-lg" />`}
+    />
+
+    <ComponentShowcase
+      title="Icon System Usage"
       description="Lucide icon library with consistent sizing and usage patterns"
       preview={
         <div className="grid grid-cols-8 gap-4 w-full">
           <div className="text-center space-y-2">
-            <Home className="w-6 h-6 mx-auto" />
+            <Home className="icon-md mx-auto" />
             <p className="text-xs font-mono">Home</p>
           </div>
           <div className="text-center space-y-2">
-            <User className="w-6 h-6 mx-auto" />
+            <User className="icon-md mx-auto" />
             <p className="text-xs font-mono">User</p>
           </div>
           <div className="text-center space-y-2">
-            <Settings className="w-6 h-6 mx-auto" />
+            <Settings className="icon-md mx-auto" />
             <p className="text-xs font-mono">Settings</p>
           </div>
           <div className="text-center space-y-2">
-            <Search className="w-6 h-6 mx-auto" />
+            <Search className="icon-md mx-auto" />
             <p className="text-xs font-mono">Search</p>
           </div>
           <div className="text-center space-y-2">
-            <Mail className="w-6 h-6 mx-auto" />
+            <Mail className="icon-md mx-auto" />
             <p className="text-xs font-mono">Mail</p>
           </div>
           <div className="text-center space-y-2">
-            <Phone className="w-6 h-6 mx-auto" />
+            <Phone className="icon-md mx-auto" />
             <p className="text-xs font-mono">Phone</p>
           </div>
           <div className="text-center space-y-2">
-            <Calendar className="w-6 h-6 mx-auto" />
+            <Calendar className="icon-md mx-auto" />
             <p className="text-xs font-mono">Calendar</p>
           </div>
           <div className="text-center space-y-2">
-            <Clock className="w-6 h-6 mx-auto" />
+            <Clock className="icon-md mx-auto" />
             <p className="text-xs font-mono">Clock</p>
           </div>
         </div>
       }
       code={`import { Home, User, Settings, Search, Mail, Phone } from "lucide-react"
 
-// Icon usage
-<Home className="w-6 h-6" />
-<User className="w-4 h-4" /> // Small
-<Settings className="w-8 h-8" /> // Large`}
+// Consistent icon usage with size utilities
+<Home className="icon-md" />
+<User className="icon-sm" />
+<Settings className="icon-lg" />`}
     />
 
     <ComponentShowcase
@@ -717,7 +970,7 @@ function MyComponent() {
               <div className="font-bold uppercase text-base mb-2">Success Toast</div>
               <div className="text-sm opacity-80">Positive feedback with accent background</div>
             </div>
-            <div className="p-4 border-2 border-neo-text bg-[hsl(var(--neo-destructive-accent))] shadow-neo">
+            <div className="p-4 border-2 border-neo-text bg-[var(--neo-destructive)] shadow-neo">
               <div className="font-bold uppercase text-base mb-2 text-white">Error Toast</div>
               <div className="text-sm opacity-80 text-white">Error messages with red background</div>
             </div>
@@ -731,7 +984,7 @@ const toastVariants = cva(
       variant: {
         default: "bg-[var(--neo-bg)]",
         success: "bg-[var(--neo-accent)]",
-        destructive: "bg-[hsl(var(--neo-destructive-accent))]",
+        destructive: "bg-[var(--neo-destructive)]",
       },
     },
     defaultVariants: {
@@ -1138,6 +1391,67 @@ const DataDisplayShowcase = () => (
 const MoleculesShowcase = () => (
   <div className="grid gap-8">
     <ComponentShowcase
+      title="Toolbar Component"
+      description="Reusable toolbar organism replacing inline button group hover patterns"
+      preview={
+        <div className="space-y-6 w-full">
+          <div>
+            <h4 className="font-bold mb-3">Horizontal Toolbar</h4>
+            <Toolbar>
+              <ToolbarItem>
+                <Save className="icon-sm" />
+              </ToolbarItem>
+              <ToolbarItem>
+                <Edit className="icon-sm" />
+              </ToolbarItem>
+              <ToolbarItem>
+                <Trash2 className="icon-sm" />
+              </ToolbarItem>
+            </Toolbar>
+          </div>
+          <div>
+            <h4 className="font-bold mb-3">Elevated Toolbar</h4>
+            <Toolbar variant="elevated" size="lg">
+              <ToolbarItem size="lg">
+                <Download className="icon-md" />
+              </ToolbarItem>
+              <ToolbarItem size="lg">
+                <Upload className="icon-md" />
+              </ToolbarItem>
+              <ToolbarItem size="lg">
+                <Settings className="icon-md" />
+              </ToolbarItem>
+            </Toolbar>
+          </div>
+        </div>
+      }
+      code={`import { Toolbar, ToolbarItem } from "@/components/ui/toolbar"
+
+// Basic toolbar with icon buttons
+<Toolbar>
+  <ToolbarItem>
+    <Save className="icon-sm" />
+  </ToolbarItem>
+  <ToolbarItem>
+    <Edit className="icon-sm" />
+  </ToolbarItem>
+  <ToolbarItem>
+    <Trash2 className="icon-sm" />
+  </ToolbarItem>
+</Toolbar>
+
+// Elevated toolbar with larger icons
+<Toolbar variant="elevated" size="lg">
+  <ToolbarItem size="lg">
+    <Download className="icon-md" />
+  </ToolbarItem>
+</Toolbar>
+
+// Replaces inline styles like:
+// hover:bg-[var(--neo-accent)]/50 hover:shadow-none hover:transform-none`}
+    />
+
+    <ComponentShowcase
       title="Button Groups"
       description="Buttons combined into functional groups and toolbars"
       preview={
@@ -1338,258 +1652,848 @@ const MoleculesShowcase = () => (
   </div>
 )
 
+// TEMPLATES SECTION COMPONENTS
+const TemplatesShowcase = () => (
+  <div className="grid gap-8">
+    <ComponentShowcase
+      title="AppFrame Template"
+      description="Complete application layout template with header, sidebar, main content, and footer"
+      preview={
+        <div className="w-full max-w-4xl border-2 border-neo-text bg-neo-bg">
+          <AppFrame layout="sidebar" className="h-64">
+            <AppHeader>
+              <AppBrand>Brand</AppBrand>
+              <AppNavigation>
+                <Button variant="ghost" size="sm">Dashboard</Button>
+                <Button variant="ghost" size="sm">Settings</Button>
+              </AppNavigation>
+              <AppActions>
+                <Button size="sm">Login</Button>
+              </AppActions>
+            </AppHeader>
+            <div className="flex flex-1">
+              <AppSidebar width="sm">
+                <AppSidebarNav>
+                  <AppSidebarSection title="Navigation">
+                    <AppSidebarItem active icon={<Home className="icon-sm" />}>
+                      Dashboard
+                    </AppSidebarItem>
+                    <AppSidebarItem icon={<Settings className="icon-sm" />}>
+                      Settings
+                    </AppSidebarItem>
+                    <AppSidebarItem icon={<User className="icon-sm" />}>
+                      Profile
+                    </AppSidebarItem>
+                  </AppSidebarSection>
+                </AppSidebarNav>
+              </AppSidebar>
+              <AppMain>
+                <div className="text-center py-8">
+                  <h2 className="text-lg font-bold mb-2">Main Content</h2>
+                  <p className="text-sm text-muted-foreground">Application content goes here</p>
+                </div>
+              </AppMain>
+            </div>
+          </AppFrame>
+        </div>
+      }
+      code={`import { AppFrame, AppHeader, AppSidebar, AppMain } from "@/components/templates/app-frame"
+
+<AppFrame layout="sidebar">
+  <AppHeader>
+    <AppBrand>My App</AppBrand>
+    <AppNavigation>
+      <Button variant="ghost">Dashboard</Button>
+      <Button variant="ghost">Settings</Button>
+    </AppNavigation>
+    <AppActions>
+      <Button>Login</Button>
+    </AppActions>
+  </AppHeader>
+  <div className="flex flex-1">
+    <AppSidebar>
+      <AppSidebarNav>
+        <AppSidebarSection title="Navigation">
+          <AppSidebarItem active icon={<Home />}>
+            Dashboard
+          </AppSidebarItem>
+          <AppSidebarItem icon={<Settings />}>
+            Settings
+          </AppSidebarItem>
+        </AppSidebarSection>
+      </AppSidebarNav>
+    </AppSidebar>
+    <AppMain>
+      <h1>Welcome to the app</h1>
+    </AppMain>
+  </div>
+</AppFrame>`}
+    />
+
+    <ComponentAPI 
+      componentName="AppFrame"
+      props={[
+        { name: "layout", type: "\"default\" | \"sidebar\" | \"centered\"", default: "\"default\"", description: "Main layout configuration" },
+        { name: "children", type: "React.ReactNode", required: true, description: "AppFrame content (header, main, footer, etc.)" },
+        { name: "className", type: "string", description: "Additional CSS classes" }
+      ]}
+    />
+
+    <ComponentShowcase
+      title="SettingsPage Template"  
+      description="Comprehensive settings page template with sections, items, and form fields"
+      preview={
+        <div className="w-full max-w-4xl border-2 border-neo-text bg-neo-bg p-4">
+          <SettingsPage>
+            <SettingsHeader 
+              title="Account Settings"
+              description="Manage your account preferences and security settings"
+              badge={<Badge variant="info">Pro Account</Badge>}
+              actions={
+                <Button size="sm">Save All Changes</Button>
+              }
+            />
+            <SettingsSection title="Profile Information" layout="default">
+              <SettingsItem
+                title="Personal Details"
+                description="Update your name, email, and profile information"
+                actions={<Button size="sm" variant="outline">Edit</Button>}
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <SettingsField label="First Name" required>
+                    <Input placeholder="John" />
+                  </SettingsField>
+                  <SettingsField label="Last Name" required>
+                    <Input placeholder="Doe" />
+                  </SettingsField>
+                </div>
+              </SettingsItem>
+              
+              <SettingsItem
+                title="Email Preferences"
+                description="Configure your notification settings"
+                badge={<Badge variant="success">Active</Badge>}
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label>Marketing emails</Label>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label>Security alerts</Label>
+                    <Switch defaultChecked />
+                  </div>
+                </div>
+              </SettingsItem>
+            </SettingsSection>
+            
+            <SettingsDangerZone>
+              <Button variant="destructive" size="sm">
+                Delete Account
+              </Button>
+            </SettingsDangerZone>
+          </SettingsPage>
+        </div>
+      }
+      code={`import { SettingsPage, SettingsHeader, SettingsSection, SettingsItem } from "@/components/templates/settings-page"
+
+<SettingsPage>
+  <SettingsHeader 
+    title="Account Settings"
+    description="Manage your account preferences"
+    badge={<Badge variant="info">Pro Account</Badge>}
+    actions={<Button>Save All</Button>}
+  />
+  <SettingsSection title="Profile Information">
+    <SettingsItem
+      title="Personal Details"
+      description="Update your profile information"
+      actions={<Button variant="outline">Edit</Button>}
+    >
+      <div className="grid grid-cols-2 gap-4">
+        <SettingsField label="First Name" required>
+          <Input placeholder="John" />
+        </SettingsField>
+        <SettingsField label="Last Name" required>
+          <Input placeholder="Doe" />
+        </SettingsField>
+      </div>
+    </SettingsItem>
+  </SettingsSection>
+  <SettingsDangerZone>
+    <Button variant="destructive">Delete Account</Button>
+  </SettingsDangerZone>
+</SettingsPage>`}
+    />
+
+    <ComponentAPI 
+      componentName="SettingsPage"
+      props={[
+        { name: "children", type: "React.ReactNode", required: true, description: "Settings page content" },
+        { name: "className", type: "string", description: "Additional CSS classes" }
+      ]}
+    />
+
+    <ComponentShowcase
+      title="FormPage Template"
+      description="Multi-step form template with progress tracking, validation, and error handling"
+      preview={
+        <div className="w-full max-w-4xl border-2 border-neo-text bg-neo-bg p-4">
+          <FormPage>
+            <FormHeader 
+              title="Create New Project"
+              description="Fill out the form below to create your new project"
+              progress={60}
+              step={{ current: 2, total: 3 }}
+            />
+            <FormContent layout="default">
+              <FormPageSection 
+                title="Project Details"
+                description="Basic information about your project"
+                required
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="project-name">Project Name *</Label>
+                    <Input id="project-name" placeholder="My Awesome Project" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="project-type">Project Type</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="web">Web Application</SelectItem>
+                        <SelectItem value="mobile">Mobile App</SelectItem>
+                        <SelectItem value="desktop">Desktop Software</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="description">Description</Label>
+                  <Textarea id="description" placeholder="Describe your project..." rows={3} />
+                </div>
+              </FormPageSection>
+              
+              <FormSuccessMessage 
+                title="Validation Passed"
+                message="All required fields have been completed successfully."
+                actions={<Button size="sm" variant="outline">Review</Button>}
+              />
+            </FormContent>
+            <FormActions align="between">
+              <Button variant="outline">Previous Step</Button>
+              <div className="flex gap-2">
+                <Button variant="outline">Save Draft</Button>
+                <Button>Next Step</Button>
+              </div>
+            </FormActions>
+          </FormPage>
+        </div>
+      }
+      code={`import { FormPage, FormHeader, FormContent, FormSection, FormActions } from "@/components/templates/form-page"
+
+<FormPage>
+  <FormHeader 
+    title="Create New Project"
+    description="Fill out the form below"
+    progress={60}
+    step={{ current: 2, total: 3 }}
+  />
+  <FormContent layout="default">
+    <FormSection 
+      title="Project Details"
+      description="Basic project information"
+      required
+    >
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Project Name *</Label>
+          <Input id="name" placeholder="My Project" />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="type">Project Type</Label>
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="web">Web App</SelectItem>
+              <SelectItem value="mobile">Mobile App</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </FormSection>
+    <FormSuccessMessage 
+      message="All fields completed successfully."
+    />
+  </FormContent>
+  <FormActions align="between">
+    <Button variant="outline">Previous</Button>
+    <Button>Next Step</Button>
+  </FormActions>
+</FormPage>`}
+    />
+
+    <ComponentAPI 
+      componentName="FormPage"
+      props={[
+        { name: "children", type: "React.ReactNode", required: true, description: "Form page content" },
+        { name: "className", type: "string", description: "Additional CSS classes" }
+      ]}
+    />
+
+    <AccessibilityNote
+      ariaLabels={[
+        "All form elements must have proper labels",
+        "Progress indicators use aria-valuenow and aria-valuemax", 
+        "Step indicators use aria-current for current step",
+        "Error messages are associated with fields via aria-describedby"
+      ]}
+      keyboardControls={[
+        { key: "Tab", action: "Navigate between form elements" },
+        { key: "Enter", action: "Submit form or proceed to next step" },
+        { key: "Escape", action: "Cancel form or close validation errors" }
+      ]}
+      focusManagement={[
+        "Focus moves to first error field when validation fails",
+        "Focus returns to trigger element when modal forms close",
+        "Focus moves to next step when advancing through multi-step forms"
+      ]}
+      screenReader={[
+        "Progress and step information announced when changed",
+        "Validation errors announced immediately",
+        "Success messages announced when forms complete"
+      ]}
+    />
+
+    <BestPractices
+      dos={[
+        "Use semantic HTML form elements",
+        "Provide clear progress indicators for multi-step forms",
+        "Show validation feedback immediately after field interaction",
+        "Use consistent button placement and action hierarchy",
+        "Provide success confirmation for completed actions"
+      ]}
+      donts={[
+        "Don't submit forms without user confirmation",
+        "Don't hide critical validation errors",
+        "Don't use unclear or generic error messages",
+        "Don't remove progress indicators in long forms",
+        "Don't disable submit buttons without clear reason"
+      ]}
+      tips={[
+        "Use FormPage template for complex multi-step workflows",
+        "SettingsPage template works well for configuration interfaces", 
+        "AppFrame template provides consistent navigation structure",
+        "Combine templates for complex application layouts",
+        "Templates are responsive and work well on mobile devices"
+      ]}
+    />
+  </div>
+)
+
 // ORGANISMS SECTION COMPONENTS
 const OrganismsShowcase = () => (
   <div className="grid gap-8">
     <ComponentShowcase
-      title="Navigation Bar"
-      description="Complete navigation component with branding and actions"
+      title="Modal System"
+      description="Enhanced modal dialogs with various sizes, variants, and accessibility features"
       preview={
-        <div className="w-full border-2 border-neo-text bg-neo-bg p-4">
-          <div className="flex items-center justify-between">
-            <h1 className="font-heading text-2xl font-bold">Brand</h1>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm">Home</Button>
-              <Button variant="ghost" size="sm">About</Button>
-              <Button variant="ghost" size="sm">Contact</Button>
-              <Button size="sm">Sign In</Button>
-            </div>
-          </div>
+        <div className="flex gap-4 w-full justify-center">
+          <Modal>
+            <ModalTrigger asChild>
+              <Button>Standard Modal</Button>
+            </ModalTrigger>
+            <ModalContent size="default">
+              <ModalHeader>
+                <ModalTitle>Confirm Action</ModalTitle>
+              </ModalHeader>
+              <ModalBody>
+                <p>Are you sure you want to proceed with this action? This cannot be undone.</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="outline">Cancel</Button>
+                <Button>Confirm</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+
+          <Modal>
+            <ModalTrigger asChild>
+              <Button variant="outline">Large Modal</Button>
+            </ModalTrigger>
+            <ModalContent size="lg" variant="blur">
+              <ModalHeader>
+                <ModalTitle>Large Modal Example</ModalTitle>
+              </ModalHeader>
+              <ModalBody>
+                <p>This is a larger modal with blur backdrop variant. It demonstrates the modal system's flexibility.</p>
+                <div className="mt-4 p-4 border-2 border-neo-text bg-neo-interactive-bg">
+                  <p className="text-sm">Content area with brutalist styling</p>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button>Got it</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </div>
       }
-      code={`<header className="border-2 border-neo-text bg-neo-bg p-4">
-  <div className="flex items-center justify-between">
-    <h1 className="font-heading text-2xl font-bold">Brand</h1>
-    <nav className="flex items-center gap-4">
-      <Button variant="ghost" size="sm">Home</Button>
-      <Button variant="ghost" size="sm">About</Button>
-      <Button size="sm">Sign In</Button>
-    </nav>
-  </div>
-</header>`}
+      code={`import { Modal, ModalTrigger, ModalContent, ModalHeader, ModalTitle, ModalBody, ModalFooter } from "@/components/ui/modal"
+
+<Modal>
+  <ModalTrigger asChild>
+    <Button>Open Modal</Button>
+  </ModalTrigger>
+  <ModalContent size="default">
+    <ModalHeader>
+      <ModalTitle>Modal Title</ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <p>Modal content goes here</p>
+    </ModalBody>
+    <ModalFooter>
+      <Button variant="outline">Cancel</Button>
+      <Button>Confirm</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>`}
+    />
+
+    <ComponentAPI 
+      componentName="Modal"
+      props={[
+        { name: "size", type: "\"sm\" | \"default\" | \"lg\" | \"xl\" | \"full\"", default: "\"default\"", description: "Modal size variant" },
+        { name: "variant", type: "\"default\" | \"blur\" | \"solid\"", default: "\"default\"", description: "Backdrop variant" },
+        { name: "padding", type: "\"none\" | \"sm\" | \"default\" | \"lg\"", default: "\"default\"", description: "Content padding" },
+        { name: "children", type: "React.ReactNode", required: true, description: "Modal content" }
+      ]}
     />
 
     <ComponentShowcase
-      title="Tab Interface"
-      description="Tabbed content navigation with multiple panels"
+      title="BrutalistTooltip System"
+      description="Enhanced tooltip system with multiple variants and semantic colors"
       preview={
-        <div className="w-full">
-          <Tabs defaultValue="tab1" className="w-full">
-            <TabsList className="w-full grid-cols-3">
-              <TabsTrigger value="tab1">Overview</TabsTrigger>
-              <TabsTrigger value="tab2">Analytics</TabsTrigger>
-              <TabsTrigger value="tab3">Settings</TabsTrigger>
-            </TabsList>
-            <TabsContent value="tab1" className="mt-4 p-4 border-2 border-neo-text bg-neo-bg">
-              <h3 className="font-bold mb-2">Overview Content</h3>
-              <p>This is the overview tab content area.</p>
-            </TabsContent>
-            <TabsContent value="tab2" className="mt-4 p-4 border-2 border-neo-text bg-neo-bg">
-              <h3 className="font-bold mb-2">Analytics Content</h3>
-              <p>This is the analytics tab content area.</p>
-            </TabsContent>
-            <TabsContent value="tab3" className="mt-4 p-4 border-2 border-neo-text bg-neo-bg">
-              <h3 className="font-bold mb-2">Settings Content</h3>
-              <p>This is the settings tab content area.</p>
-            </TabsContent>
-          </Tabs>
+        <div className="flex flex-wrap gap-4 w-full justify-center items-center">
+          <BrutalistTooltipProvider>
+            <SimpleTooltip content="Default tooltip">
+              <Button variant="outline">Default</Button>
+            </SimpleTooltip>
+          </BrutalistTooltipProvider>
+
+          <BrutalistTooltipProvider>
+            <SimpleTooltip content="Success action completed" variant="success">
+              <Button variant="outline">Success</Button>
+            </SimpleTooltip>
+          </BrutalistTooltipProvider>
+
+          <BrutalistTooltipProvider>
+            <SimpleTooltip content="Warning: Please review" variant="warning">
+              <Button variant="outline">Warning</Button>
+            </SimpleTooltip>
+          </BrutalistTooltipProvider>
+
+          <BrutalistTooltipProvider>
+            <SimpleTooltip content="Error occurred" variant="destructive">
+              <Button variant="outline">Error</Button>
+            </SimpleTooltip>
+          </BrutalistTooltipProvider>
+
+          <BrutalistTooltipProvider>
+            <SimpleTooltip content="Information available" variant="info">
+              <Button variant="outline">Info</Button>
+            </SimpleTooltip>
+          </BrutalistTooltipProvider>
+
+          <BrutalistTooltipProvider>
+            <SimpleTooltip content="Large tooltip content" size="lg" variant="accent">
+              <Button variant="outline">Large Accent</Button>
+            </SimpleTooltip>
+          </BrutalistTooltipProvider>
         </div>
       }
-      code={`<Tabs defaultValue="tab1" className="w-full">
+      code={`import { SimpleTooltip, BrutalistTooltipProvider } from "@/components/ui/brutalist-tooltip"
+
+<BrutalistTooltipProvider>
+  <SimpleTooltip content="Default tooltip">
+    <Button>Hover me</Button>
+  </SimpleTooltip>
+</BrutalistTooltipProvider>
+
+<BrutalistTooltipProvider>
+  <SimpleTooltip content="Success message" variant="success">
+    <Button>Success</Button>
+  </SimpleTooltip>
+</BrutalistTooltipProvider>
+
+<BrutalistTooltipProvider>
+  <SimpleTooltip content="Large tooltip" size="lg" variant="accent">
+    <Button>Large Accent</Button>
+  </SimpleTooltip>
+</BrutalistTooltipProvider>`}
+    />
+
+    <ComponentAPI 
+      componentName="BrutalistTooltip"
+      props={[
+        { name: "variant", type: "\"default\" | \"accent\" | \"destructive\" | \"success\" | \"warning\" | \"info\"", default: "\"default\"", description: "Tooltip color variant" },
+        { name: "size", type: "\"sm\" | \"default\" | \"lg\"", default: "\"default\"", description: "Tooltip size" },
+        { name: "side", type: "\"top\" | \"right\" | \"bottom\" | \"left\"", default: "\"top\"", description: "Tooltip position" },
+        { name: "content", type: "React.ReactNode", required: true, description: "Tooltip content" }
+      ]}
+    />
+
+    <ComponentShowcase
+      title="Enhanced DataTable"
+      description="Complete data table with sorting, selection, density modes, and state management"
+      preview={
+        <div className="w-full">
+          <DataTable variant="striped" density="comfortable">
+            <DataTableHeader>
+              <DataTableRow>
+                <SelectableHeader />
+                <SortableHeader sortKey="name">Name</SortableHeader>
+                <SortableHeader sortKey="email">Email</SortableHeader>
+                <DataTableHead>Role</DataTableHead>
+                <DataTableHead>Actions</DataTableHead>
+              </DataTableRow>
+            </DataTableHeader>
+            <DataTableBody>
+              <DataTableRow selectable>
+                <DataTableCell>
+                  <Checkbox />
+                </DataTableCell>
+                <DataTableCell className="font-medium">John Doe</DataTableCell>
+                <DataTableCell>john@example.com</DataTableCell>
+                <DataTableCell><Badge>Admin</Badge></DataTableCell>
+                <DataTableCell>
+                  <Button size="sm" variant="outline">Edit</Button>
+                </DataTableCell>
+              </DataTableRow>
+              <DataTableRow selectable>
+                <DataTableCell>
+                  <Checkbox />
+                </DataTableCell>
+                <DataTableCell className="font-medium">Jane Smith</DataTableCell>
+                <DataTableCell>jane@example.com</DataTableCell>
+                <DataTableCell><Badge variant="secondary">User</Badge></DataTableCell>
+                <DataTableCell>
+                  <Button size="sm" variant="outline">Edit</Button>
+                </DataTableCell>
+              </DataTableRow>
+              <DataTableEmptyState colSpan={5}>
+                <div className="text-center py-8">
+                  <p className="text-sm font-medium">No more data</p>
+                  <p className="text-xs text-muted-foreground">Add new items to see them here.</p>
+                </div>
+              </DataTableEmptyState>
+            </DataTableBody>
+          </DataTable>
+        </div>
+      }
+      code={`import { DataTable, DataTableHeader, DataTableBody, DataTableRow, SortableHeader, SelectableHeader } from "@/components/ui/data-table"
+
+<DataTable variant="striped" density="comfortable">
+  <DataTableHeader>
+    <DataTableRow>
+      <SelectableHeader />
+      <SortableHeader sortKey="name">Name</SortableHeader>
+      <SortableHeader sortKey="email">Email</SortableHeader>
+      <DataTableHead>Role</DataTableHead>
+      <DataTableHead>Actions</DataTableHead>
+    </DataTableRow>
+  </DataTableHeader>
+  <DataTableBody>
+    <DataTableRow selectable>
+      <DataTableCell><Checkbox /></DataTableCell>
+      <DataTableCell>John Doe</DataTableCell>
+      <DataTableCell>john@example.com</DataTableCell>
+      <DataTableCell><Badge>Admin</Badge></DataTableCell>
+      <DataTableCell>
+        <Button size="sm" variant="outline">Edit</Button>
+      </DataTableCell>
+    </DataTableRow>
+  </DataTableBody>
+</DataTable>`}
+    />
+
+    <ComponentAPI 
+      componentName="DataTable"
+      props={[
+        { name: "variant", type: "\"default\" | \"striped\" | \"bordered\"", default: "\"default\"", description: "Table styling variant" },
+        { name: "density", type: "\"comfortable\" | \"compact\"", default: "\"comfortable\"", description: "Row spacing density" },
+        { name: "children", type: "React.ReactNode", required: true, description: "Table content (header, body)" }
+      ]}
+    />
+
+    <ComponentShowcase
+      title="Enhanced Popover System"
+      description="Enhanced popover with variants, sizing, and composition components"
+      preview={
+        <div className="flex gap-4 w-full justify-center">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Default Popover</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverHeader>
+                <PopoverTitle>Quick Settings</PopoverTitle>
+              </PopoverHeader>
+              <PopoverBody>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Notifications</Label>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label>Dark Mode</Label>
+                    <Switch />
+                  </div>
+                </div>
+              </PopoverBody>
+              <PopoverFooter>
+                <Button size="sm">Save</Button>
+              </PopoverFooter>
+            </PopoverContent>
+          </Popover>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline">Accent Popover</Button>
+            </PopoverTrigger>
+            <PopoverContent variant="accent" size="lg">
+              <PopoverHeader>
+                <PopoverTitle>Feature Highlight</PopoverTitle>
+              </PopoverHeader>
+              <PopoverBody>
+                <p>This popover uses the accent variant to draw attention to important information or features.</p>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </div>
+      }
+      code={`import { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverTitle, PopoverBody } from "@/components/ui/popover"
+
+<Popover>
+  <PopoverTrigger asChild>
+    <Button>Open Settings</Button>
+  </PopoverTrigger>
+  <PopoverContent>
+    <PopoverHeader>
+      <PopoverTitle>Quick Settings</PopoverTitle>
+    </PopoverHeader>
+    <PopoverBody>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label>Notifications</Label>
+          <Switch />
+        </div>
+      </div>
+    </PopoverBody>
+    <PopoverFooter>
+      <Button size="sm">Save</Button>
+    </PopoverFooter>
+  </PopoverContent>
+</Popover>`}
+    />
+
+    <ComponentAPI 
+      componentName="Popover"
+      props={[
+        { name: "size", type: "\"sm\" | \"default\" | \"lg\" | \"xl\" | \"auto\"", default: "\"default\"", description: "Popover size" },
+        { name: "variant", type: "\"default\" | \"accent\" | \"muted\"", default: "\"default\"", description: "Popover color variant" },
+        { name: "align", type: "\"start\" | \"center\" | \"end\"", default: "\"center\"", description: "Alignment relative to trigger" },
+        { name: "sideOffset", type: "number", default: "4", description: "Distance from trigger element" }
+      ]}
+    />
+
+    <ComponentShowcase
+      title="Enhanced Tabs System"
+      description="Comprehensive tabs with variants, orientation support, and badge integration"
+      preview={
+        <div className="space-y-6 w-full">
+          <div>
+            <h4 className="font-bold mb-3">Default Tabs</h4>
+            <Tabs defaultValue="tab1" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="tab1">Overview</TabsTrigger>
+                <TabsTrigger value="tab2">Analytics</TabsTrigger>
+                <TabsTrigger value="tab3">Settings</TabsTrigger>
+              </TabsList>
+              <TabsContent value="tab1" className="mt-4">
+                <div className="p-4 border-2 border-neo-text bg-neo-bg">
+                  <h3 className="font-bold mb-2">Overview Content</h3>
+                  <p>This is the overview tab content area with default styling.</p>
+                </div>
+              </TabsContent>
+              <TabsContent value="tab2" className="mt-4">
+                <div className="p-4 border-2 border-neo-text bg-neo-bg">
+                  <h3 className="font-bold mb-2">Analytics Content</h3>
+                  <p>Analytics and metrics information displayed here.</p>
+                </div>
+              </TabsContent>
+              <TabsContent value="tab3" className="mt-4">
+                <div className="p-4 border-2 border-neo-text bg-neo-bg">
+                  <h3 className="font-bold mb-2">Settings Content</h3>
+                  <p>Configuration and preference options.</p>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-3">Pills Variant</h4>
+            <Tabs defaultValue="tab1" className="w-full">
+              <TabsList variant="pills" className="grid w-full grid-cols-3">
+                <TabsTrigger value="tab1" variant="pills">
+                  Dashboard
+                </TabsTrigger>
+                <TabsTrigger value="tab2" variant="pills">
+                  Reports
+                </TabsTrigger>
+                <TabsTrigger value="tab3" variant="pills">
+                  Admin
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="tab1" className="mt-4" padding="lg">
+                <p>Dashboard content with pills-style tab navigation.</p>
+              </TabsContent>
+              <TabsContent value="tab2" className="mt-4" padding="lg">
+                <p>Reports and analytics with enhanced spacing.</p>
+              </TabsContent>
+              <TabsContent value="tab3" className="mt-4" padding="lg">
+                <p>Admin panel configuration options.</p>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      }
+      code={`import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+
+// Default tabs
+<Tabs defaultValue="tab1">
   <TabsList className="grid w-full grid-cols-3">
     <TabsTrigger value="tab1">Overview</TabsTrigger>
     <TabsTrigger value="tab2">Analytics</TabsTrigger>
     <TabsTrigger value="tab3">Settings</TabsTrigger>
   </TabsList>
   <TabsContent value="tab1">
-    <h3>Overview Content</h3>
     <p>Tab content goes here</p>
+  </TabsContent>
+</Tabs>
+
+// Pills variant
+<Tabs defaultValue="tab1">
+  <TabsList variant="pills" className="grid w-full grid-cols-3">
+    <TabsTrigger value="tab1" variant="pills">Dashboard</TabsTrigger>
+    <TabsTrigger value="tab2" variant="pills">Reports</TabsTrigger>
+  </TabsList>
+  <TabsContent value="tab1" padding="lg">
+    <p>Enhanced content with padding</p>
   </TabsContent>
 </Tabs>`}
     />
 
-    <ComponentShowcase
-      title="Accordion Menu"
-      description="Collapsible content sections with nested information"
-      preview={
-        <div className="w-full">
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-left">
-                Getting Started
-              </AccordionTrigger>
-              <AccordionContent className="pb-4">
-                Learn the basics of using our design system and component library.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger className="text-left">
-                Component Usage
-              </AccordionTrigger>
-              <AccordionContent className="pb-4">
-                Detailed documentation on how to use each component effectively.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger className="text-left">
-                Customization
-              </AccordionTrigger>
-              <AccordionContent className="pb-4">
-                Guidelines for customizing components to fit your needs.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      }
-      code={`<Accordion type="single" collapsible>
-  <AccordionItem value="item-1">
-    <AccordionTrigger>Getting Started</AccordionTrigger>
-    <AccordionContent>
-      Learn the basics of using our design system.
-    </AccordionContent>
-  </AccordionItem>
-  <AccordionItem value="item-2">
-    <AccordionTrigger>Component Usage</AccordionTrigger>
-    <AccordionContent>
-      Detailed documentation for each component.
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>`}
+    <ComponentAPI 
+      componentName="Tabs"
+      props={[
+        { name: "variant", type: "\"default\" | \"pills\" | \"underline\"", default: "\"default\"", description: "Tab styling variant" },
+        { name: "orientation", type: "\"horizontal\" | \"vertical\"", default: "\"horizontal\"", description: "Tab orientation" },
+        { name: "size", type: "\"sm\" | \"default\" | \"lg\"", default: "\"default\"", description: "Tab size" },
+        { name: "defaultValue", type: "string", description: "Initially selected tab" }
+      ]}
     />
 
-    <ComponentShowcase
-      title="Data Table"
-      description="Complete table with headers, data, and actions"
-      preview={
-        <div className="w-full border-2 border-neo-text">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-b-4 border-neo-text">
-                <TableHead className="font-bold">Name</TableHead>
-                <TableHead className="font-bold">Email</TableHead>
-                <TableHead className="font-bold">Role</TableHead>
-                <TableHead className="font-bold">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow className="border-b-2 border-neo-text">
-                <TableCell className="font-medium">John Doe</TableCell>
-                <TableCell>john@example.com</TableCell>
-                <TableCell><Badge>Admin</Badge></TableCell>
-                <TableCell>
-                  <Button size="sm" variant="outline">Edit</Button>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Jane Smith</TableCell>
-                <TableCell>jane@example.com</TableCell>
-                <TableCell><Badge variant="secondary">User</Badge></TableCell>
-                <TableCell>
-                  <Button size="sm" variant="outline">Edit</Button>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
-      }
-      code={`<Table>
-  <TableHeader>
-    <TableRow className="border-b-4 border-neo-text">
-      <TableHead className="font-bold">Name</TableHead>
-      <TableHead className="font-bold">Email</TableHead>
-      <TableHead className="font-bold">Role</TableHead>
-      <TableHead className="font-bold">Actions</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-    <TableRow>
-      <TableCell>John Doe</TableCell>
-      <TableCell>john@example.com</TableCell>
-      <TableCell>
-        <Button size="sm" variant="outline">Edit</Button>
-      </TableCell>
-    </TableRow>
-  </TableBody>
-</Table>`}
+    <AccessibilityNote
+      ariaLabels={[
+        "All interactive elements have proper ARIA labels",
+        "Tables use proper column headers and row relationships",
+        "Modals trap focus and return focus on close",
+        "Tooltips are associated with trigger elements via aria-describedby"
+      ]}
+      keyboardControls={[
+        { key: "Tab", action: "Navigate between focusable elements" },
+        { key: "Enter/Space", action: "Activate buttons and triggers" },
+        { key: "Escape", action: "Close modals, popovers, and tooltips" },
+        { key: "Arrow keys", action: "Navigate within tab lists and data tables" }
+      ]}
+      focusManagement={[
+        "Focus is trapped within modal dialogs",
+        "Focus returns to trigger element when closing overlays",
+        "Tab navigation follows logical visual order",
+        "Focus indicators are clearly visible"
+      ]}
+      screenReader={[
+        "All content is accessible to screen readers",
+        "State changes are announced appropriately",
+        "Table data includes proper header associations",
+        "Modal titles and descriptions are announced"
+      ]}
     />
 
-    <ComponentShowcase
-      title="Interactive Dialogs"
-      description="Modal dialogs for user interactions and confirmations"
-      preview={
-        <div className="flex gap-4 w-full justify-center">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Open Dialog</Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Confirm Action</DialogTitle>
-                <DialogDescription>
-                  Are you sure you want to proceed with this action?
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex justify-end gap-2 mt-4">
-                <Button variant="outline">Cancel</Button>
-                <Button>Confirm</Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="outline">Open Sheet</Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Side Panel</SheetTitle>
-                <SheetDescription>
-                  This is a side panel for additional content or forms.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="mt-4">
-                <p>Panel content goes here...</p>
-              </div>
-            </SheetContent>
-          </Sheet>
-        </div>
-      }
-      code={`<Dialog>
-  <DialogTrigger asChild>
-    <Button>Open Dialog</Button>
-  </DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Confirm Action</DialogTitle>
-      <DialogDescription>
-        Are you sure you want to proceed?
-      </DialogDescription>
-    </DialogHeader>
-    <div className="flex justify-end gap-2 mt-4">
-      <Button variant="outline">Cancel</Button>
-      <Button>Confirm</Button>
-    </div>
-  </DialogContent>
-</Dialog>`}
+    <BestPractices
+      dos={[
+        "Use DataTable for complex data with sorting/filtering needs",
+        "Use Modal for critical confirmations and complex forms",
+        "Use BrutalistTooltip for helpful context and status information",
+        "Use Popover for lightweight settings and quick actions",
+        "Use Tabs to organize related content into logical sections"
+      ]}
+      donts={[
+        "Don't use modals for simple confirmations (prefer inline alerts)",
+        "Don't nest modals or tooltips within each other",
+        "Don't use tables for simple lists (prefer cards or lists)",
+        "Don't use too many tab levels (prefer hierarchical navigation)",
+        "Don't use tooltips for critical information (prefer persistent UI)"
+      ]}
+      tips={[
+        "Combine organisms for complex interfaces (tabs with data tables)",
+        "Use consistent sizing across related components",
+        "Test keyboard navigation thoroughly",
+        "Consider mobile responsive behavior for all organisms",
+        "Use semantic variants to convey meaning (success, warning, error)"
+      ]}
     />
   </div>
 )
 
 export default function StyleGuidePage() {
-  const [activeSection, setActiveSection] = useState("atoms")
+  const [activeSection, setActiveSection] = useState("foundations")
 
   const renderSection = () => {
     switch (activeSection) {
+      case "foundations":
+        return (
+          <AtomicSection 
+            title="Foundations" 
+            description="Design tokens, CSS variables, and fundamental rules that power the system"
+          >
+            <TypographyShowcase />
+            <ColorSystemShowcase />
+            <SpacingSystemShowcase />
+            <MotionSystemShowcase />
+            <ElevationSystemShowcase />
+          </AtomicSection>
+        )
+      case "icons":
+        return (
+          <AtomicSection 
+            title="Icons" 
+            description="Icon system with standardized sizing and content-specific usage"
+          >
+            <IconsShowcase />
+          </AtomicSection>
+        )
       case "atoms":
         return (
           <AtomicSection 
             title="Atoms" 
             description="The basic building blocks of our design system"
           >
-            <TypographyShowcase />
-            <ColorSystemShowcase />
-            <SpacingSystemShowcase />
-            <IconsShowcase />
             <ButtonsShowcase />
             <BasicControlsShowcase />
             <NotificationShowcase />
@@ -1620,38 +2524,98 @@ export default function StyleGuidePage() {
             title="Templates" 
             description="Page-level layouts and structure patterns"
           >
+            <TemplatesShowcase />
+          </AtomicSection>
+        )
+      case "guidelines":
+        return (
+          <AtomicSection 
+            title="Guidelines" 
+            description="Accessibility standards, component states, and design principles"
+          >
             <ComponentShowcase
-              title="Page Layout"
-              description="Standard page structure with header, content, and footer"
+              title="Component States Matrix"
+              description="Every component must document these states for consistency and accessibility"
               preview={
-                <div className="w-full border-2 border-neo-text bg-neo-bg min-h-48">
-                  <div className="border-b-2 border-neo-text p-4 bg-neo-interactive-bg">
-                    <div className="text-sm font-bold">Header</div>
-                  </div>
-                  <div className="p-8 flex-1 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-lg font-bold mb-2">Main Content Area</div>
-                      <div className="text-sm text-muted-foreground">Page content goes here</div>
-                    </div>
-                  </div>
-                  <div className="border-t-2 border-neo-text p-4 bg-neo-interactive-bg">
-                    <div className="text-sm font-bold">Footer</div>
+                <div className="w-full border-2 border-neo-text">
+                  <div className="grid grid-cols-6 gap-0">
+                    <div className="font-bold p-3 border-r border-b border-neo-text bg-neo-muted">Component</div>
+                    <div className="font-bold p-3 border-r border-b border-neo-text bg-neo-muted text-center">Default</div>
+                    <div className="font-bold p-3 border-r border-b border-neo-text bg-neo-muted text-center">Hover</div>
+                    <div className="font-bold p-3 border-r border-b border-neo-text bg-neo-muted text-center">Active</div>
+                    <div className="font-bold p-3 border-r border-b border-neo-text bg-neo-muted text-center">Focus</div>
+                    <div className="font-bold p-3 border-b border-neo-text bg-neo-muted text-center">Disabled</div>
+                    
+                    <div className="p-3 border-r border-b border-neo-text font-mono text-sm">Button</div>
+                    <div className="p-2 border-r border-b border-neo-text text-center"><Button size="sm">Default</Button></div>
+                    <div className="p-2 border-r border-b border-neo-text text-center"><Button size="sm" className="hover:bg-neo-accent/90">Hover</Button></div>
+                    <div className="p-2 border-r border-b border-neo-text text-center"><Button size="sm" className="active:shadow-none">Active</Button></div>
+                    <div className="p-2 border-r border-b border-neo-text text-center"><Button size="sm" className="focus-ring">Focus</Button></div>
+                    <div className="p-2 border-b border-neo-text text-center"><Button size="sm" disabled>Disabled</Button></div>
                   </div>
                 </div>
               }
-              code={`<div className="min-h-screen flex flex-col">
-  <header className="border-b-2 border-neo-text p-4 bg-neo-interactive-bg">
-    <h1>Site Header</h1>
-  </header>
-  <main className="flex-1 p-8">
-    <div className="max-w-6xl mx-auto">
-      Main content area
-    </div>
-  </main>
-  <footer className="border-t-2 border-neo-text p-4 bg-neo-interactive-bg">
-    Site Footer
-  </footer>
-</div>`}
+              code={`/* Every component must document these states: */
+
+// Default - base appearance
+// Hover - mouse hover interaction  
+// Active - pressed/clicked state
+// Focus - keyboard focus (must be visible)
+// Disabled - non-interactive state
+
+// Accessibility Requirements:
+// - Focus indicators must be visible (not color-only)
+// - Contrast ratios must meet WCAG standards
+// - Interactive elements need proper ARIA labels
+// - Keyboard navigation must work for all controls`}
+            />
+
+            <ComponentShowcase
+              title="Density System"
+              description="Comfortable and compact spacing modes for different contexts"
+              preview={
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                  <div className="space-y-4">
+                    <h4 className="font-bold text-center">Comfortable (Default)</h4>
+                    <div className="space-neo-lg border-2 border-neo-text p-4 bg-neo-bg">
+                      <div className="space-neo-md">
+                        <Label>Form Field</Label>
+                        <Input placeholder="Comfortable spacing" />
+                      </div>
+                      <div className="space-neo-md">
+                        <Label>Another Field</Label>
+                        <Input placeholder="More breathing room" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <h4 className="font-bold text-center">Compact</h4>
+                    <div className="space-neo-sm border-2 border-neo-text p-3 bg-neo-bg">
+                      <div className="space-neo-sm">
+                        <Label className="text-sm">Form Field</Label>
+                        <Input placeholder="Compact spacing" className="h-9" />
+                      </div>
+                      <div className="space-neo-sm">
+                        <Label className="text-sm">Another Field</Label>
+                        <Input placeholder="Tighter layout" className="h-9" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+              code={`/* Density Modes */
+
+// Comfortable (Default) - use standard spacing tokens
+.form-comfortable .space-neo-md > * + * { margin-top: var(--neo-space-md); }
+.form-comfortable .gap-neo-md { gap: var(--neo-space-md); }
+
+// Compact - use smaller spacing tokens  
+.form-compact .space-neo-sm > * + * { margin-top: var(--neo-space-sm); }
+.form-compact .gap-neo-sm { gap: var(--neo-space-sm); }
+
+// Usage
+<form className="form-comfortable"> // Standard density
+<form className="form-compact">     // Compact density`}
             />
           </AtomicSection>
         )
@@ -1674,7 +2638,7 @@ export default function StyleGuidePage() {
       </header>
 
       <div className="max-w-7xl mx-auto">
-        <AtomicNavigation 
+        <DesignSystemNavigation 
           activeSection={activeSection} 
           onSectionChange={setActiveSection} 
         />

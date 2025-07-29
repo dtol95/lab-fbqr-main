@@ -33,7 +33,7 @@ export const AnimatedBrutalistXIcon = ({ className }: AnimatedBrutalistXIconProp
         r="14"
         stroke="var(--neo-text)"
         strokeWidth="2"
-        fill="hsl(var(--neo-destructive-accent))"
+        fill="var(--neo-destructive)"
       />
       <motion.path
         key="cross"
